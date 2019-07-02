@@ -9,41 +9,38 @@ Nos dan un número entre el 1 y 100, y tenemos que devolver por orden lo siguien
 * Si el número es divisible por 7, añadimos “Quix”.
 * Por cada dígito 3,5 o 7, añadiremos “Foo”, “Bar”, “Quix” respectivamente y en orden de aparición.
 */  
-    
 
 function foobarquix (num) {
-    switch (num) {
-        case valor1:
-            //Sentencias ejecutadas cuando el resultado de expresion coincide con valor1
-            [break;]
-        case valor2:
-            //Sentencias ejecutadas cuando el resultado de expresion coincide con valor2
-            [break;]
-        ...
-        case valorN:
-            //Sentencias ejecutadas cuando el resultado de expresion coincide con valorN
-            [break;]
-        default:
-            //Sentencias_def ejecutadas cuando no ocurre una coincidencia con los anteriores casos
-            [break;]
+    let output;
+
+    if(num % 3 === 0){
+        //Foo
+        }
+    if(num % 5 === 0){
+        //Bar
+    }
+    if(num % 7 === 0){
+        //Quix
     }
 
-}
+    //divido el numero en cifras
+    let cifra = num.toString();
 
+    for (let i =0; i <num.length; i++)
+    {
 
+        switch (num) {
+            case 3:
+                //Foo
 
-    switch valor {
-        (es 3){
-            escribo foo
+            case 5:
+                //Bar
+
+            case 7:
+                //Quix
         }
-        (es 5){
-            escribo bar
-        }
-        (es 7){
-            escribo Quix
-        }
-
     }
 }
+
 
 /* Ejecución de prueba */
