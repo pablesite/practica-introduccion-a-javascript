@@ -11,42 +11,50 @@ Nos dan un número entre el 1 y 100, y tenemos que devolver por orden lo siguien
 */  
 
 function foobarquix (num) {
-    let output;
+    let output = "";
 
     if(num % 3 === 0){
         //Foo
-        output += "Foo"
+        output += "Foo";
         }
     if(num % 5 === 0){
         //Bar
-        output += "Bar"
+        output += "Bar";
     }
     if(num % 7 === 0){
         //Quix
-        output += "Quix"
+        output += "Quix";
     }
 
     //divido el numero en cifras
-    let cifras = num.toString();
+    let cifras = num.toString().split('');
 
-    for (let i =0; i <num.length; i++)  //foreach
-    {
+    cifras.forEach(function(element) {
 
-        switch (cifras[i]) {
-            case 3:
+        switch (element) {
+            case '3':
                 //Foo
-
-            case 5:
+                output += "Foo";
+                break;
+            case '5':
                 //Bar
-
-            case 7:
+                output += "Bar";
+                break;
+            case '7':
                 //Quix
+                output += "Quix";
+                break;
         }
-    }
+
+    });
+
+    if (output === "")
+        output = num;
+
     return output;
 }
 
 
 /* Ejecución de prueba */
 
-console.log(foobarquix(15));
+console.log(foobarquix(47));
