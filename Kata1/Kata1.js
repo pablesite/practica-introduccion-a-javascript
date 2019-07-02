@@ -15,21 +15,24 @@ function foobarquix (num) {
 
     if(num % 3 === 0){
         //Foo
+        output += "Foo"
         }
     if(num % 5 === 0){
         //Bar
+        output += "Bar"
     }
     if(num % 7 === 0){
         //Quix
+        output += "Quix"
     }
 
     //divido el numero en cifras
-    let cifra = num.toString();
+    let cifras = num.toString();
 
-    for (let i =0; i <num.length; i++)
+    for (let i =0; i <num.length; i++)  //foreach
     {
 
-        switch (num) {
+        switch (cifras[i]) {
             case 3:
                 //Foo
 
@@ -40,7 +43,10 @@ function foobarquix (num) {
                 //Quix
         }
     }
+    return output;
 }
 
 
 /* Ejecución de prueba */
+
+console.log(foobarquix(15));
