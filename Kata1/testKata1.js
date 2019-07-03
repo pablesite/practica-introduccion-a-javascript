@@ -1,3 +1,7 @@
 //import foobarquix from 'foobarquix.js';
 
-console.log(foobarquix(75));
+
+let foo = require("./foobarquix");
+
+
+console.log(foo.foobarquix(77));
