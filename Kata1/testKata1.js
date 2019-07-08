@@ -30,4 +30,3 @@ nums.forEach(function(element) {
 
 
 
-
