@@ -1,7 +1,7 @@
-//import foobarquix from 'foobarquix.js';
+/*import * as foo from 'foobarquix';*/
+/*import {foobarquix} from './foobarquix';*/
+
+let test = require("./foobarquix");
 
 
-let foo = require("./foobarquix");
-
-
-console.log(foo.foobarquix(77));
+console.log(test.foobarquix(77));

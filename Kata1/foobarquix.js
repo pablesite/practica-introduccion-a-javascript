@@ -10,13 +10,13 @@ Nos dan un número entre el 1 y 100, y tenemos que devolver por orden lo siguien
 * Por cada dígito 3,5 o 7, añadiremos “Foo”, “Bar”, “Quix” respectivamente y en orden de aparición.
 */
 
-function foobarquix (num) {
+/*export*/ function foobarquix (num) {
     let output = "";
 
     if(num % 3 === 0){
         //Foo
         output += "Foo";
-        }
+    }
     if(num % 5 === 0){
         //Bar
         output += "Bar";
