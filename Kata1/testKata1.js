@@ -27,6 +27,3 @@ nums.forEach(function(element) {
     console.log(element, ' -> ', test.foobarquix(element));
 });
 
-
-
-
