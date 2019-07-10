@@ -228,3 +228,5 @@ Además, la función para ver los repetidos ya no haría falta, porque con la de
 
 Por último, falta añadir la comprobación de cuando se introduce una letra que no es de las permitidas...
  */
+
+
