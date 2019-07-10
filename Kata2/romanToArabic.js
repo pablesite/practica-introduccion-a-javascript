@@ -40,3 +40,8 @@ arrayStr.forEach(function(element, n) {
 /* para testear */
 
 console.log(sum);
+
+function romanToArabic (romanStr) {
+
+
+}

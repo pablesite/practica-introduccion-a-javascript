@@ -1,20 +1,17 @@
 /*## Sistema Romano
-Vamos a hacer un ejercicio clásico y es jugar con los números romanos y árabes.
-Como refresco, vamos a ver sus símbolos y reglas.
-
 #### Símbolos
 
 Romano | Árabe
 --------|-------
-    I | 1
+I | 1
 V | 5
-    X | 10
+X | 10
 L | 50
-    C | 100
+C | 100
 D | 500
-    M | 1000
+M | 1000
 
-### Reglas
+### Reglas - Instrucciones
 
 Sólo se contemplan números entre el 1 y el 3999
 
@@ -27,10 +24,8 @@ Sólo se contemplan números entre el 1 y el 3999
 * C se resta de D y M
 * Los símbolos V, L y D no pueden colocarse a la izquierda de otro mayor.
 
-### Ejercicios
 
-* Crear una función para pasar de número romanos a árabes
-* Crear una función para pasar de árabes a romanos
+
 * Hacer un validador de números romanos
 */
 
@@ -158,15 +153,8 @@ function validateAnteMayor (arrayStr, simbol) {
 }
 
 
-function romanToArabic (romanStr) {
 
 
-}
-
-function arabicToRoman (arabicNum) {
-
-
-}
 
 function validateRomanNum (romanStr) {
 
@@ -182,19 +170,20 @@ function validateRomanNum (romanStr) {
          console.log ("El número romano no es correcto. Repite uno de los símbolos I, X, C o M más de tres veces");
      }
 
-     /* Los símbolos V, L y D no pueden repetirse. */
-     else if(arrayStr.filter(simbol => simbol === "V").length > 1 ||
-             arrayStr.filter(simbol => simbol === "L").length > 1 ||
-             arrayStr.filter(simbol => simbol === "D").length > 1 )
-     {
-         console.log ("El número romano no es correcto. Repite uno de los símbolos V, L o D");
-     }
 
      /* Los símbolos I, X y C solamente pueden anteponerse a los dos símbolos que le siguen en la sucesión (I-->V-X  X->-L-C  C-->D-M) */
      else if (!validateAnteSucesion1(arrayStr, "I"))
               /*!validateAnteSucesion(arrayStr, "X") )*/
      {
          console.log ("El número romano no es correcto. Los símbolos I, X y C solamente pueden anteponerse a los dos símbolos que le siguen en la sucesión");
+     }
+
+     /* Los símbolos V, L y D no pueden repetirse. */
+     else if(arrayStr.filter(simbol => simbol === "V").length > 1 ||
+         arrayStr.filter(simbol => simbol === "L").length > 1 ||
+         arrayStr.filter(simbol => simbol === "D").length > 1 )
+     {
+         console.log ("El número romano no es correcto. Repite uno de los símbolos V, L o D");
      }
 
      /* Los símbolos V, L y D no pueden colocarse a la izquierda de otro mayor */
@@ -216,7 +205,81 @@ function validateRomanNum (romanStr) {
 
 
 
-validateRomanNum ("ASFASFSAXIIIX");
+/*validateRomanNum ("MMMM");*/
+
+
+
+
+
+let equivalence  = {
+    "I": 1,
+    "V": 5,
+    "X": 10,
+    "L": 50,
+    "C": 100,
+    "D": 500,
+    "M": 1000
+};
+
+let simbol ="I";
+let allowSimbols = Object.keys(equivalence).reverse();
+let allowSimbolsTemp = [];
+
+
+/* explicación
+* Empiezo a leer el número romano de derecha a izquierda
+* Compruebo cada símbolo y si el de la izquierda es más pequeño... qué hago?
+* Lo que hago ahora mismo es decir que el de la izquierda está limitado por un array de allowsimbols. Esto está mal.
+* Están permitidos hasta dos símbolos por debajo menores. Si lo hiciera así tal y como está planteado, tampoco me funcionaría el caso IXV*/
+function validateAnteSucesion2 (romanStr) {
+
+    let arrayStr = romanStr.split("").reverse();
+
+
+    arrayStr.forEach(function(element, n) {
+        // Veo el primer símbolo...
+        if (n === 0 ){
+            //veo qué símbolo es el primero.
+            simbol = allowSimbols.find(simbol => simbol === arrayStr[n]);
+
+            //limito los símbolos que habrán a su izquierda. Siempre de mayor o igual tamaño.
+            allowSimbols.reverse().forEach(function (element,n){
+                if (equivalence[allowSimbols[n]] >= equivalence[simbol]) {
+                    allowSimbolsTemp.push(allowSimbols[n]);
+                }
+            });
+            allowSimbols = allowSimbolsTemp;
+            allowSimbolsTemp = [];
+            console.log(allowSimbols)
+
+        }
+        else{
+            // Si el simbolo a la izquierda es más grande o igual...
+            if (equivalence[element] >= equivalence[arrayStr[n-1]]){
+                //veo qué símbolo es el que toca.
+                simbol = allowSimbols.find(simbol => simbol === arrayStr[n]);
+
+                //limito los símbolos que habrán a su izquierda. Siempre de mayor o igual tamaño
+                allowSimbols.reverse().forEach(function (element,n){
+
+                    if (equivalence[allowSimbols[n]] >= equivalence[simbol]) {
+                        allowSimbolsTemp.push(allowSimbols[n]);
+                    }
+                });
+                allowSimbols = allowSimbolsTemp;
+                allowSimbolsTemp = [];
+                console.log(allowSimbols)
+
+            } else {
+                allowSimbol = []
+            }
+        }
+    });
+}
+
+
+validateAnteSucesion2 ("MCL");
+
 
 /* Ahora mismo hay cosas que aun no funcionan.
 

@@ -57,3 +57,10 @@ count.forEach(function(element) {
 console.log(str);
 
 /*MCMLXXXVIII*/
+
+
+
+function arabicToRoman (arabicNum) {
+
+
+}
