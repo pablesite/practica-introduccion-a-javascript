@@ -22,107 +22,40 @@ Sólo se contemplan números entre el 1 y el 3999
 * I se resta de V y X
 * X se resta de L y C
 * C se resta de D y M
+* ADEMÁS, después de que uno de estos símbolos haga su función de resta, en el símbolo siguiente no puede volver a ir ni él mismo ni ninguno de los mayores a él.
 * Los símbolos V, L y D no pueden colocarse a la izquierda de otro mayor.
-
-
-
-* Hacer un validador de números romanos
 */
 
-// está mal, porque el if primero evita comprobar la posible repetición cuando no se produce en el inicio
+function validateSimbols(arrayStr) {
+
+    let output = true;
+    let validSimbols  = ["I", "V", "X", "L", "C", "D", "M"];
+
+    arrayStr.forEach(function(element) {
+        if (validSimbols.find(simbol => simbol === element) === undefined) {
+            output = false;
+        }
+    });
+    return output;
+}
+
 function validateRepetitionsIXCM (arrayStr, simbol) {
     let newArray = [];
-    let i = -1;
     let output = true;
-    arrayStr.forEach(function(element, index) {
-        if (element === simbol && index === i + 1){
+    arrayStr.forEach(function(element) {
+        if (element === simbol){
             newArray.push(element);
             if (newArray.length > 3){
                 output = false;
             }
-            i = index;
+
+        } else {
+            newArray = [];
         }
     });
     return output;
 
 }
-
-function validateAnteSucesion (arrayStr, simbol) {
-    let i = -1;
-    let output = true;
-
-    arrayStr.forEach(function(element, index) {
-        if (element === simbol){
-            i = index;
-        }
-
-        if (index === i + 1 && index !== 0) {
-            switch (simbol) {
-                case 'I':
-                    if ((element === "L" || element === "C" || element === "D" || element === "M")) {output = false;}
-                    break;
-                case 'X':
-                    if ((element === "D" || element === "M")) {output = false;}
-                    break;
-            }
-        }
-    });
-
-    return output;
-
-}
-
-function validateAnteSucesion1 (arrayStr, simbol) {
-    let newArray = [];
-    let newArray2 = [];
-    let i = -1;
-    let count = 0;
-    let element2 = "";
-    let output = true;
-
-    let found = arrayStr.findIndex(function(element) {return element === simbol;});
-
-    arrayStr.forEach(function(element, index) {
-        if (index >= found){
-            newArray.push(element);
-        }
-    });
-
-    console.log(newArray);
-
-    newArray.forEach(function(element, index) {
-        //Puede que esto tenga un problema si se repiten 3 simbolos iguales tras la primera sucesión de ese mismo simbolo.
-        if (index === i + 1) {
-            newArray2.push(element);
-            if (element === simbol) {
-                i = index;
-            }
-        }
-    });
-
-    console.log(newArray2);
-
-    if (newArray2.length > 4){
-        output = false;
-    } else if (newArray2.length === 4){
-        element2 = newArray2[3];
-        //comprobación 1
-        if (element2 != null) {output = false;}
-    }else if (newArray2.length === 3){
-        element2 = newArray2[2];
-        //comprobación 2
-        if ((element2 === "V" || element2 === "X" || element2 === "L" || element2 === "C" || element2 === "D" || element2 === "M")) {output = false;}
-
-    }else if (newArray2.length === 2){
-        element2 = newArray2[1];
-        //comprobación 3
-        if ((element2 === "L" || element2 === "C" || element2 === "D" || element2 === "M")) {output = false;}
-    }
-
-    return output;
-
-}
-
 
 function validateAnteMayor (arrayStr, simbol) {
     let i = -1;
@@ -152,17 +85,106 @@ function validateAnteMayor (arrayStr, simbol) {
 
 }
 
+/*
+* Recorro los símbolos de izquierda a derecha.
+* compruebo que sea más pequeño que el siguiente para que todo sea ok.
+* Si el siguiente es igual -->  el símbolo siguiente no puede ser mayor en ningún caso. Una vez repite, ya no puede restar
+* Si el siguiente no es más pequeño, quiere decir que está restando en el que estoy. Entonces,
+* se ccomprueba qué sea uno de los signos que pueden restar (I, X o C). Si no, número incorrecto.
+* Si es uno de esos, se hace un switch que comprueba que cada símbolo que resta se corresponde con uno de los siguientes:
+* I se resta de V y X --> Si la comprobación es buena, entonces la cadena de números debe terminar tras la V o la X.
+* X se resta de L y C --> Si la comprobación es buena, entonces después sólo pueden venir símbolos V o I. (para esto jugaré con el array allowsimbols)
+* C se resta de D y M --> Si la comprobación es buena, entonces después sólo pueden venir símbolos L, X, V o I (para esto jugaré con el array allowsimbols)
+* */
+function validateBehaviourIXC (arrayStr) {
 
+    let equivalence  = {
+        "I": 1,
+        "V": 5,
+        "X": 10,
+        "L": 50,
+        "C": 100,
+        "D": 500,
+        "M": 1000
+    };
 
+    let simbolTemp = arrayStr[0];
+    let output = true;
 
+    arrayStr.forEach(function(element, n) {
+        if (n !== 0) {
+            if (equivalence[simbolTemp] > equivalence[element]) {
+                //el símbolo siguiente es más grande o igual, por lo tanto no hay que hacer nada especial.
+                simbolTemp = element;
+            } else if (equivalence[simbolTemp] === equivalence[element]){
+                /* el símbolo siguiente no puede ser mayor en ningún caso. Una vez repite, ya no puede restar */
+                if (equivalence[arrayStr[n + 1]] > equivalence[simbolTemp]) {
+                    output = false;
 
+                }
+            } else {
+                if (arrayStr[n-1] !== "I" && arrayStr[n-1] !== "X" && arrayStr[n-1] !== "C") {
+                    output = false;
+
+                } else {
+                    switch (simbolTemp) {
+                        case 'I':
+                            if (element !== "V" && element !== "X") {
+                                output = false;
+
+                            } else {
+                                if (arrayStr[n + 1] !== undefined) {
+                                    output = false;
+
+                                }
+                            }
+                            break;
+                        case 'X':
+                            if (element !== "L" && element !== "C") {
+                                output = false;
+
+                            } else {
+                                if (arrayStr[n + 1] !== "V" && arrayStr[n + 1] !== "I" && arrayStr[n + 1] !== undefined) {
+                                    output = false;
+                                }
+                            }
+                            break;
+                        case 'C':
+                            if (element !== "D" && element !== "M") {
+                                output = false;
+                            } else {
+                                if (arrayStr[n + 1] !== "L" && arrayStr[n + 1] !== "X" && arrayStr[n + 1] !== "V" && arrayStr[n + 1] !== "I" && arrayStr[n + 1] !== undefined) {
+                                    output = false;
+                                }
+                            }
+                            break;
+                    }
+                }
+                simbolTemp = element;
+            }
+
+        }
+
+    });
+    return output;
+
+}
+
+/* Función principal para validar números romanos */
 function validateRomanNum (romanStr) {
 
     let arrayStr = romanStr.split("");
 
+    /* Si se introduce un símbolo que no se corresponde con los símbolos romanos, da error */
+    if(!validateSimbols(arrayStr))
+    {
+        console.log ("En el número hay símbolos no reconocidos.");
+        return false;
+    }
+
 
     /* Si se repite un simbolo más de 3 veces seguidas debe dar error */
-     if (!validateRepetitionsIXCM(arrayStr, "I") ||
+     else if (!validateRepetitionsIXCM(arrayStr, "I") ||
          !validateRepetitionsIXCM(arrayStr, "X") ||
          !validateRepetitionsIXCM(arrayStr, "C") ||
          !validateRepetitionsIXCM(arrayStr, "M"))
@@ -170,20 +192,20 @@ function validateRomanNum (romanStr) {
          console.log ("El número romano no es correcto. Repite uno de los símbolos I, X, C o M más de tres veces");
      }
 
-
-     /* Los símbolos I, X y C solamente pueden anteponerse a los dos símbolos que le siguen en la sucesión (I-->V-X  X->-L-C  C-->D-M) */
-     else if (!validateAnteSucesion1(arrayStr, "I"))
-              /*!validateAnteSucesion(arrayStr, "X") )*/
+     /* Los símbolos I, X y C solamente pueden anteponerse a los dos símbolos que le siguen en la sucesión (I-->V-X  X->-L-C  C-->D-M)
+     * Además, después de que uno de estos símbolos haga su función de resta, después no puede volver a ir  ni él mismo ni ninguno de los mayores a él. */
+     else if (!validateBehaviourIXC(arrayStr))
      {
-         console.log ("El número romano no es correcto. Los símbolos I, X y C solamente pueden anteponerse a los dos símbolos que le siguen en la sucesión");
+         console.log ("El número romano no es correcto. Los símbolos I, X y C solamente pueden anteponerse a los dos símbolos que le siguen en la sucesión. Puede que haya introducido valores mayores de lo que corresponde tras una resta");
      }
 
      /* Los símbolos V, L y D no pueden repetirse. */
      else if(arrayStr.filter(simbol => simbol === "V").length > 1 ||
-         arrayStr.filter(simbol => simbol === "L").length > 1 ||
-         arrayStr.filter(simbol => simbol === "D").length > 1 )
+             arrayStr.filter(simbol => simbol === "L").length > 1 ||
+             arrayStr.filter(simbol => simbol === "D").length > 1 )
      {
          console.log ("El número romano no es correcto. Repite uno de los símbolos V, L o D");
+         return false;
      }
 
      /* Los símbolos V, L y D no pueden colocarse a la izquierda de otro mayor */
@@ -197,99 +219,13 @@ function validateRomanNum (romanStr) {
        /* El número es correcto*/
      else {
          console.log ("El número romano introducido es correcto.")
+         return true;
      }
 
 }
 
 
+exports.validateRomanNum = validateRomanNum;
 
-
-
-/*validateRomanNum ("MMMM");*/
-
-
-
-
-
-let equivalence  = {
-    "I": 1,
-    "V": 5,
-    "X": 10,
-    "L": 50,
-    "C": 100,
-    "D": 500,
-    "M": 1000
-};
-
-let simbol ="I";
-let allowSimbols = Object.keys(equivalence).reverse();
-let allowSimbolsTemp = [];
-
-
-/* explicación
-* Empiezo a leer el número romano de derecha a izquierda
-* Compruebo cada símbolo y si el de la izquierda es más pequeño... qué hago?
-* Lo que hago ahora mismo es decir que el de la izquierda está limitado por un array de allowsimbols. Esto está mal.
-* Están permitidos hasta dos símbolos por debajo menores. Si lo hiciera así tal y como está planteado, tampoco me funcionaría el caso IXV*/
-function validateAnteSucesion2 (romanStr) {
-
-    let arrayStr = romanStr.split("").reverse();
-
-
-    arrayStr.forEach(function(element, n) {
-        // Veo el primer símbolo...
-        if (n === 0 ){
-            //veo qué símbolo es el primero.
-            simbol = allowSimbols.find(simbol => simbol === arrayStr[n]);
-
-            //limito los símbolos que habrán a su izquierda. Siempre de mayor o igual tamaño.
-            allowSimbols.reverse().forEach(function (element,n){
-                if (equivalence[allowSimbols[n]] >= equivalence[simbol]) {
-                    allowSimbolsTemp.push(allowSimbols[n]);
-                }
-            });
-            allowSimbols = allowSimbolsTemp;
-            allowSimbolsTemp = [];
-            console.log(allowSimbols)
-
-        }
-        else{
-            // Si el simbolo a la izquierda es más grande o igual...
-            if (equivalence[element] >= equivalence[arrayStr[n-1]]){
-                //veo qué símbolo es el que toca.
-                simbol = allowSimbols.find(simbol => simbol === arrayStr[n]);
-
-                //limito los símbolos que habrán a su izquierda. Siempre de mayor o igual tamaño
-                allowSimbols.reverse().forEach(function (element,n){
-
-                    if (equivalence[allowSimbols[n]] >= equivalence[simbol]) {
-                        allowSimbolsTemp.push(allowSimbols[n]);
-                    }
-                });
-                allowSimbols = allowSimbolsTemp;
-                allowSimbolsTemp = [];
-                console.log(allowSimbols)
-
-            } else {
-                allowSimbol = []
-            }
-        }
-    });
-}
-
-
-validateAnteSucesion2 ("MCL");
-
-
-/* Ahora mismo hay cosas que aun no funcionan.
-
-Para empezar, sólo estoy comprobando en la función validateAnteSucesion1, el símbolo I. Me falta hacer un switch con  la X y la C también.
-
-Por otra parte, he detectado que si pongo por ejemplo el número IXV sí funcionaría según mi lógica. Eso no es correcto. Si la X tiene a la izq un símbolo restando, el de la derecha no puede estar sumando.
-
-Además, la función para ver los repetidos ya no haría falta, porque con la de validateAnteSucesion1 se soluciona esa parte.
-
-Por último, falta añadir la comprobación de cuando se introduce una letra que no es de las permitidas...
- */
 
 

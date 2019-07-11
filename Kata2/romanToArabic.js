@@ -6,42 +6,45 @@
 *   2. b Si n es más pequeño que n-1, n se resta al total.
 * */
 
-
-/* para testear */
-let romanStr = "MCMLXXXVIII";
-
-let equivalence  = {
-    "I": 1,
-    "V": 5,
-    "X": 10,
-    "L": 50,
-    "C": 100,
-    "D": 500,
-    "M": 1000
-};
-
-let sum = 0;
-
-let arrayStr = romanStr.split("").reverse();
-
-arrayStr.forEach(function(element, n) {
-    if (n === 0 ){
-        sum += equivalence[element];
-    }
-    else{
-        if (equivalence[element] >= equivalence[arrayStr[n-1]]){
-            sum += equivalence[element];
-        } else {
-            sum -= equivalence[element];
-        }
-    }
-});
-
-/* para testear */
-
-console.log(sum);
+let testValidate = require("./validateRomanNumber");
 
 function romanToArabic (romanStr) {
 
+    if (!testValidate.validateRomanNum (romanStr)) {
+        return undefined;
+    } else {
 
+    let equivalence  = {
+        "I": 1,
+        "V": 5,
+        "X": 10,
+        "L": 50,
+        "C": 100,
+        "D": 500,
+        "M": 1000
+    };
+
+    let sum = 0;
+
+    let arrayStr = romanStr.split("").reverse();
+
+    arrayStr.forEach(function(element, n) {
+        if (n === 0 ){
+            sum += equivalence[element];
+        }
+        else{
+            if (equivalence[element] >= equivalence[arrayStr[n-1]]){
+                sum += equivalence[element];
+            } else {
+                sum -= equivalence[element];
+            }
+        }
+    });
+    return sum;
+    }
 }
+
+exports.romanToArabic = romanToArabic;
+
+
+

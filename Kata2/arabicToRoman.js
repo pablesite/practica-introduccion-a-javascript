@@ -14,53 +14,46 @@
 * 4 Lo mismo con el resto que quede.
 * */
 
-/* para testear */
-let arabicNum = 1427;
+function arabicToRoman (arabicNum) {
+    if (arabicNum < 1 || arabicNum > 3999){
+        return "El número introducido está fuera de rango"
+    } else {
+        let rest = 0;
+        let str = "";
 
+        let equivalence  = {
+            1    : "I",
+            5    : "V",
+            10   : "X",
+            50   : "L",
+            100  : "C",
+            500  : "D",
+            1000 : "M"
+        };
 
-let rest = 0;
-let str = "";
+        let count = [1000, 100, 10, 1];
+        count.forEach(function(element) {
+            rest = Math.floor(arabicNum/element);
+            arabicNum -= rest * element;
+            if (rest > 0 && rest <= 3) {
+                str += equivalence[element].repeat(rest);
+            }else if (rest === 4 && element !== 1000) {
+                str += equivalence[element] + equivalence[element*5];
+            }else if (rest === 5 && element !== 1000) {
+                str += equivalence[element * 5];
+            }else if (rest >= 6 && rest <= 8 && element !== 1000) {
+                str += equivalence[element * 5] + equivalence[element].repeat(rest-5);
+            }else if (rest === 9 && element !== 1000) {
+                str += equivalence[element] + equivalence[element * 10] ;
+            }
 
-let equivalence  = {
-    1    : "I",
-    5    : "V",
-    10   : "X",
-    50   : "L",
-    100  : "C",
-    500  : "D",
-    1000 : "M"
-};
-
-
-let count = [1000, 100, 10, 1];
-count.forEach(function(element) {
-    rest = Math.floor(arabicNum/element);
-    arabicNum -= rest * element;
-    if (rest > 0 && rest <= 3) {
-        str += equivalence[element].repeat(rest);
-    }else if (rest === 4 && element !== 1000) {
-        str += equivalence[element] + equivalence[element*5];
-    }else if (rest === 5 && element !== 1000) {
-        str += equivalence[element * 5];
-    }else if (rest >= 6 && rest <= 8 && element !== 1000) {
-        str += equivalence[element * 5] + equivalence[element].repeat(rest-5);
-    }else if (rest === 9 && element !== 1000) {
-        str += equivalence[element] + equivalence[element * 10] ;
+        });
+        return str;
     }
 
-});
-
-
-
-/* para testear */
-
-console.log(str);
-
-/*MCMLXXXVIII*/
-
-
-
-function arabicToRoman (arabicNum) {
 
 
 }
+
+
+exports.arabicToRoman = arabicToRoman;
