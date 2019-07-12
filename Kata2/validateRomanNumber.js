@@ -182,7 +182,6 @@ function validateRomanNum (romanStr) {
         return false;
     }
 
-
     /* Si se repite un simbolo más de 3 veces seguidas debe dar error */
      else if (!validateRepetitionsIXCM(arrayStr, "I") ||
          !validateRepetitionsIXCM(arrayStr, "X") ||

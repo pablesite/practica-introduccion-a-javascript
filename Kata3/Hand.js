@@ -16,8 +16,17 @@ class Hand {
         this.card3 = new Card.Card(card3Split[0], card3Split[1]);
         this.card4 = new Card.Card(card4Split[0], card4Split[1]);
         this.card5 = new Card.Card(card5Split[0], card5Split[1]);
+
+
     }
 
+    validateHand () {
+        if(!this.card1.validateCard() || !this.card2.validateCard() || !this.card3.validateCard() || !this.card4.validateCard() || !this.card5.validateCard()){
+            return false;
+        }else {
+            return true;
+        }
+    }
 
     /* Aquí pondremos las comprobaciones para saber qué mano tiene el juegador.
     * Devuelve un valor de 1 a 9, siendo el 1 el valor de carta más alta, y el 9 la escalera de color.

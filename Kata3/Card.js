@@ -1,45 +1,30 @@
-/*function Person(name, surname, age){
-    this.name = name;
-    this.surname = surname;
-    this.age = age;
-}
-
-let person =new Person("Alejandro", "Martínez", 24);
-
-*/
-
-/*
-class Person {
-    constructor (name, surname){
-        this.name = name;
-        this.surname = surname;
-    }
-
-    sayHi(){
-        console.log("Hola, me llamo " + this.name);
-
-    }
-}
-*/
-
 
 /* Clase Carta */
 
 class Card {
     constructor (value,suit){
+
         this.value = value;
         this.suite = suit;
-/* Tengo que asignar a las letras J Q y K sus valores correspondientes en decimal. */
 
     }
 
     validateCard(){
+        let output = true;
 
+        let validValues  = ["2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K", "A"];
+        let validSimbols  = ["S", "H", "C", "D"];
+
+        if (validValues.find(value => value === this.value) === undefined) {
+            output = false;
+        }
+
+        if (validSimbols.find(suite => suite === this.suite) === undefined) {
+            output = false;
+        }
+        return output;
     }
-
-
 }
-
 
 
 exports.Card = Card;
