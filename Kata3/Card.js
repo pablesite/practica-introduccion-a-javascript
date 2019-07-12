@@ -8,27 +8,39 @@ let person =new Person("Alejandro", "Martínez", 24);
 
 */
 
-/* Cartas y Mano son objetos */
-
+/*
 class Person {
     constructor (name, surname){
         this.name = name;
         this.surname = surname;
     }
-sayHi(){
+
+    sayHi(){
         console.log("Hola, me llamo " + this.name);
 
+    }
 }
+*/
+
+
+/* Clase Carta */
+
+class Card {
+    constructor (value,suit){
+        this.value = value;
+        this.suite = suit;
+/* Tengo que asignar a las letras J Q y K sus valores correspondientes en decimal. */
+
+    }
+
+    validateCard(){
+
+    }
+
+
 }
 
 
-exports.Person = Person;
 
-/*
-1 fichero por objeto
+exports.Card = Card;
 
-1 fichero main, donde se ejecuta el programa
-se crean las cartas, se crea la mano
-se empiueza la partida, se ejecuta y se comprueba el resultado.
-
- */
