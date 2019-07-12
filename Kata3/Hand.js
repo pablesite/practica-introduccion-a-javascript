@@ -97,6 +97,27 @@ class Hand {
         }
     }
 
+    updateValues(cardValues) {
+        if (cardValues.find(value => value === "10") !== undefined){
+            cardValues[cardValues.indexOf("10")] = "A";
+        }
+        if (cardValues.find(value => value === "11") !== undefined){
+            cardValues[cardValues.indexOf("11")] = "B";
+        }
+        if (cardValues.find(value => value === "12") !== undefined){
+            cardValues[cardValues.indexOf("12")] = "B";
+        }
+        if (cardValues.find(value => value === "13") !== undefined){
+            cardValues[cardValues.indexOf("13")] = "D";
+        }
+        if (cardValues.find(value => value === "14") !== undefined){
+            cardValues[cardValues.indexOf("14")] = "E";
+        }
+        return(cardValues);
+
+    }
+
+    
 
     getHighCardPuntc(){
         /* Puntuación de la carta más alta. Igual al valor de las cartas ordenadas de mayor a menor.
@@ -106,12 +127,12 @@ class Hand {
         let cardValues = [this.card1.value, this.card2.value, this.card3.value, this.card4.value, this.card5.value];
 
         let cardValuesSort = cardValues.sort((a, b) => b - a);
-        console.log(cardValuesSort)
+        let cardValuesUpdated = this.updateValues(cardValuesSort);
 
-        cardValuesSort.forEach(function(element){
+        cardValuesUpdated.forEach(function(element){
             punctuation += element.toString(16);
         })
-        console.log(punctuation)
+
         return punctuation;
     }
 
@@ -155,8 +176,6 @@ class Hand {
     getStraightflushPuntc(){
         /* Puntuación de la carta más alta */
     }
-
-
 
 }
 

@@ -48,7 +48,7 @@ try {
                     Lo único que hay que hacer es comparar esta cadena transformada a decimal (parseInt(hex, 16)) .*/
                     punctuationPlayer1 = parseInt(handPlayer1.getPunctuation(playPlayer1),16);
                     punctuationPlayer2 = parseInt(handPlayer2.getPunctuation(playPlayer2), 16);
-
+                    console.log(handPlayer1.getPunctuation(playPlayer1) + " PUNTUACIÓN calculada reciente.")
                     console.log(punctuationPlayer1)
                     console.log(punctuationPlayer2)
 
