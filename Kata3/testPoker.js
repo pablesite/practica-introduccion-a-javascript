@@ -40,9 +40,10 @@ try {
                 playPlayer1 = handPlayer1.getPlayHand(restrict);
                 playPlayer2 = handPlayer2.getPlayHand(restrict);
                 restrict = Math.max(playPlayer1, playPlayer1);
-
+console.log(i)
                 if (playPlayer1 > playPlayer2 ) {
                     console.log("Gana el jugador 1. " + handPlayer1.getTypeHand(playPlayer1));
+                    restrict = 0;
                 } else if (playPlayer1  ===  playPlayer2) {
                     /* Cada jugada devuelve un string de 5 símbolos hexadecimales con el orden que ha resultado la puntuación de la mano.
                     Lo único que hay que hacer es comparar esta cadena transformada a decimal (parseInt(hex, 16)) .*/
@@ -54,18 +55,22 @@ try {
 
                     if (punctuationPlayer1  > punctuationPlayer2 ) {
                         console.log("Gana el jugador 1. " + handPlayer1.getTypeHand(playPlayer1) /*+ handPlayer1.typePunctuationPlayer1(punctuationPlayer1)*/);
+                        restrict = 0;
                     } else if (punctuationPlayer1 === punctuationPlayer2 ) {
                         /* Si el valor de la jugada también es empate */
                         if(restrict === 1){
                             console.log("Empate")
+                            restrict = 0;
                         } else {
-                            restrict = playPlayer1 - 1;
+                            restrict -=1;
                         }
                     } else {
                         console.log("Gana el jugador 2. " + handPlayer1.getTypeHand(playPlayer2) /*+ handPlayer1.typePunctuationPlayer1(punctuationPlayer2)*/);
+                        restrict = 0;
                     }
                 } else {
                     console.log("Gana el jugador 2. " + handPlayer1.getTypeHand(playPlayer2))
+                    restrict = 0;
                 }
             }
 
