@@ -12,21 +12,20 @@ let Hand = require("./Hand");
 let handPlayer1 = new Hand.Hand("2H", "3D", "5S", "9C", "KD");
 let handPlayer2 = new Hand.Hand("2C", "3H", "4S", "8C", "AH");
 
-
 try {
     if(!handPlayer1.validateHand() || !handPlayer2.validateHand() )
     {
         throw new Error("Una de las cartas no es válida. Por favor, revise la introducción de datos.");
     } else {
         /* Si la jugada del jugador 1 es mejor que la del 2, gana el 1.
-* Si es peor, gana el 2.
-* Si es empate, se comprueba el valor de la jugada.
-*   Si el valor de la jugada X del jugador 1 es mejor que el valor de la jugada X del jugador 2, gana el 1.
-*   Si es peor, gana el 2.
-*   Si es empate...
-*       Se vuelve a calcular la jugada de los dos jugadores con la restricción de que sea menor que la que estaban empatados.
-*       Y así vuelta a empezar hasta llegar a la primera jugada (carta más alta).*
- */
+        * Si es peor, gana el 2.
+        * Si es empate, se comprueba el valor de la jugada.
+        *   Si el valor de la jugada X del jugador 1 es mejor que el valor de la jugada X del jugador 2, gana el 1.
+        *   Si es peor, gana el 2.
+        *   Si es empate...
+        *       Se vuelve a calcular la jugada de los dos jugadores con la restricción de que sea menor que la que estaban empatados.
+        *       Y así vuelta a empezar hasta llegar a la primera jugada (carta más alta).*
+        */
         let restrict = 9;
         let i;
 
@@ -40,7 +39,7 @@ try {
                 playPlayer1 = handPlayer1.getPlayHand(restrict);
                 playPlayer2 = handPlayer2.getPlayHand(restrict);
                 restrict = Math.max(playPlayer1, playPlayer1);
-console.log(i)
+
                 if (playPlayer1 > playPlayer2 ) {
                     console.log("Gana el jugador 1. " + handPlayer1.getTypeHand(playPlayer1));
                     restrict = 0;

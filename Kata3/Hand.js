@@ -16,14 +16,13 @@ class Hand {
         this.card3 = new Card.Card(card3Split[0], card3Split[1]);
         this.card4 = new Card.Card(card4Split[0], card4Split[1]);
         this.card5 = new Card.Card(card5Split[0], card5Split[1]);
-
-
     }
 
     validateHand () {
         if(!this.card1.validateCard() || !this.card2.validateCard() || !this.card3.validateCard() || !this.card4.validateCard() || !this.card5.validateCard()){
             return false;
         }else {
+
             return true;
         }
     }
@@ -112,7 +111,7 @@ class Hand {
         cardValuesSort.forEach(function(element){
             punctuation += element.toString(16);
         })
-
+        console.log(punctuation)
         return punctuation;
     }
 

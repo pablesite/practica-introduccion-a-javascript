@@ -9,6 +9,25 @@ class Card {
 
     }
 
+    updateValues() {
+
+        if (this.value === "T") {
+            this.value = "10";
+        }
+        if (this.value === "J") {
+            this.value = "11";
+        }
+        if (this.value === "Q") {
+            this.value = "12";
+        }
+        if (this.value === "K") {
+            this.value = "13";
+        }
+        if (this.value === "A") {
+            this.value = "14";
+        }
+    }
+
     validateCard(){
         let output = true;
 
@@ -22,9 +41,17 @@ class Card {
         if (validSimbols.find(suite => suite === this.suite) === undefined) {
             output = false;
         }
+
+        //Aprovecho y actualizo los símbolos que no son números.
+        this.updateValues();
+
         return output;
     }
+
+
 }
+
+
 
 
 exports.Card = Card;
