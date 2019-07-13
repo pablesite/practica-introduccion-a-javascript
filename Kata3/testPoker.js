@@ -34,12 +34,12 @@ Este es el fichero main, desde donde:
 
 let Game = require("./Game");
 
-let game = new Game.Game (["3H", "3H", "5H", "5H", "KH"], ["9C", "9C", "8C", "8C", "AC"]);
+let game = new Game.Game (["3H", "3C", "7H", "5H", "KH"], ["9D", "9C", "8C", "5C", "AC"]);
 
     try {
         if(!game.validateGame() )
         {
-            throw new Error("Una de las cartas no es válida. Por favor, revise la introducción de datos.");
+            throw new Error("Una de las cartas no es válida, o bien, hay alguna carta repetida. Por favor, revise la introducción de datos.");
         } else {
             //mi juego
             game.playGame();

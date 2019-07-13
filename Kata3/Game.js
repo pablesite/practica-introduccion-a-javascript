@@ -6,34 +6,54 @@ let Hand = require("./Hand");
 class Game {
 
     constructor (player1, player2){
-        let card1Player1 = player1[0];
-        let card2Player1 = player1[1];
-        let card3Player1 = player1[2];
-        let card4Player1 = player1[3];
-        let card5Player1 = player1[4];
+        this.card1Player1 = player1[0];
+        this.card2Player1 = player1[1];
+        this.card3Player1 = player1[2];
+        this.card4Player1 = player1[3];
+        this.card5Player1 = player1[4];
 
-        let card1Player2 = player2[0];
-        let card2Player2 = player2[1];
-        let card3Player2 = player2[2];
-        let card4Player2 = player2[3];
-        let card5Player2 = player2[4];
+        this.card1Player2 = player2[0];
+        this.card2Player2 = player2[1];
+        this.card3Player2 = player2[2];
+        this.card4Player2 = player2[3];
+        this.card5Player2 = player2[4];
 
         if (player1.length === 5 && player2.length === 5 ) {
-            this.handPlayer1 = new Hand.Hand(card1Player1, card2Player1, card3Player1, card4Player1, card5Player1);
-            this.handPlayer2 = new Hand.Hand(card1Player2, card2Player2, card3Player2, card4Player2, card5Player2);
+            this.handPlayer1 = new Hand.Hand(this.card1Player1, this.card2Player1, this.card3Player1, this.card4Player1, this.card5Player1);
+            this.handPlayer2 = new Hand.Hand(this.card1Player2, this.card2Player2, this.card3Player2, this.card4Player2, this.card5Player2);
         }
         else {
             throw new Error("El número de cartas para una de las manos no es correcto.");
         }
 
     }
+    validateRepeatsCards(){
+        /** Recorro todas las cartas y almaceno un array con los valores de las 10 cartas.
+         * Después busco si hay repetidos. Si no, perfecto. De lo contrario, hay una carta repetida.
+          */
+
+        let cards = [this.card1Player1, this.card2Player1, this.card3Player1, this.card4Player1, this.card5Player1
+            , this.card1Player2, this.card2Player2, this.card3Player2, this.card4Player2, this.card5Player2];
+        let uniqs = cards.filter(function(item, index, array) {
+            return array.indexOf(item) === index;
+        });
+
+        if (uniqs.length < 10){
+            return false;
+        } else {
+            return true;
+        }
+    }
 
     validateGame () {
-
-        if(!this.handPlayer1.validateHand() || !this.handPlayer2.validateHand()){
+        if(!this.validateRepeatsCards()){
             return false;
-        }else {
-            return true;
+        } else {
+            if(!this.handPlayer1.validateHand() || !this.handPlayer2.validateHand()){
+                return false;
+            }else {
+                return true;
+            }
         }
     }
 
@@ -53,6 +73,9 @@ class Game {
 
         let playPlayer1 = this.handPlayer1.getPlayHand();
         let playPlayer2 = this.handPlayer2.getPlayHand();
+
+        console.log(this.handPlayer1)
+        console.log(this.handPlayer2)
 
         if (playPlayer1 > playPlayer2 ) {
             console.log("Gana el jugador 1. " + this.handPlayer1.getTypeHand(playPlayer1));

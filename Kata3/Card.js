@@ -10,6 +10,7 @@ class Card {
     /** Función auxiliar para cambiar símbolos de cartas de poker a decimal. Es importante para poder usar funciones
      * para ordenar arrays. **/
     updateValues() {
+
         if (this.value === "T") {
             this.value = "10";
         }
