@@ -28,26 +28,6 @@ class Hand {
 
         }
     }
-    updateValues(cardValues) {
-        // Función auxiliar
-        if (cardValues.find(value => value === "10") !== undefined){
-            cardValues[cardValues.indexOf("10")] = "A";
-        }
-        if (cardValues.find(value => value === "11") !== undefined){
-            cardValues[cardValues.indexOf("11")] = "B";
-        }
-        if (cardValues.find(value => value === "12") !== undefined){
-            cardValues[cardValues.indexOf("12")] = "B";
-        }
-        if (cardValues.find(value => value === "13") !== undefined){
-            cardValues[cardValues.indexOf("13")] = "D";
-        }
-        if (cardValues.find(value => value === "14") !== undefined){
-            cardValues[cardValues.indexOf("14")] = "E";
-        }
-        return(cardValues);
-
-    }
 
     /* Funciones para evaluar qué jugada hay en la mano de cartas */
     getReps(cardValues) {
@@ -247,49 +227,45 @@ class Hand {
         /* Llama a la función de conseguir la puntuación de la jugada que toque, entre las 9 funciones siguientes.*/
         switch (playHand) {
             case 1:
-                //return this.getHighCardPuntc();
-                return this.getPuntcHiPaTwThFuFo();
+                /* Puntuación de la carta más alta. Igual al valor de las cartas ordenadas de mayor a menor.
+                (5 símbolos en Hexadecimal. ejemplo: 0xA8632) */
+                return this.getGeneralPunctuation();
             case 2:
-                //return this.getPairPuntc();
-                return this.getPuntcHiPaTwThFuFo();
+                /* Puntuación de la pareja. Igual al valor de la pareja. Si es igual, valor de la carta más alta ordenada de mayor a menor.
+                (4 símbolos en Hexadecimal (1 para la pareja, y otros 3 para las otras tres cartas ordenadas de mayor a menor.))*/
+                return this.getGeneralPunctuation();
             case 3:
-                //return this.getTwoPairsPuntc();
-                return this.getPuntcHiPaTwThFuFo();
+                /* Puntuación de las dobles parejas. Igual al valor de la primera pareja + el valor de la segunda pareja + el valor de la última carta
+                (3 símbolos en Hexadecimal (1 para la pareja más alta, 1 para la pareja más baja y otro para la carta restante)) */
+                return this.getGeneralPunctuation();
             case 4:
-                //return this.getThreeOfAKindPuntc();
-                return this.getPuntcHiPaTwThFuFo();
+                /* Puntuación del trio. Igual al valor del trio + valor de las otras dos cartas ordenadas de mayor a menor.
+                (3 símbolos en Hexadecimal (1 para el valor del trio, y dos para las cartas restantes ordenadas de mayor a menor)) */
+                return this.getGeneralPunctuation();
             case 5:
-                //return this.getStraightPuntc();
-                return this.getPuntcHiPaTwThFuFo();
+                /* Puntuación de la escalera. Valor de la carta más alta de la escalera
+                * 1 símbolo en Hexadecimal */
+                return this.getGeneralPunctuation();
             case 6:
-                //return this.getFlushPuntc();
-                return this.getPuntcHiPaTwThFuFo();
+                /* Puntuación de la carta más alta (todas de color). Igual al valor de las cartas ordenadas de mayor a menor
+                * (5 símbolos en Hexadecimal. ejemplo: 0xA8632) */
+                return this.getFlushPunctuation();
             case 7:
-                //return this.getFullHousePuntc();
-                return this.getPuntcHiPaTwThFuFo();
+                /* Puntuación de un Full (trio + pareja). Igual al valor del trio + el valor de la pareja
+                * (2 símbolos en Hexadecimal */
+                return this.getGeneralPunctuation();
             case 8:
-                //return this.getFourOfAKindPuntc();
-                return this.getPuntcHiPaTwThFuFo();
+                /* Puntuación del poker (4 cartas iguales). Igual al valor del poker + el valor de la carta restante. */
+                return this.getGeneralPunctuation();
             case 9:
-                //return this.getStraightflushPuntc();
-                return this.getPuntcHiPaTwThFuFo();
+                /* Puntuación de la carta más alta */
+                return this.getGeneralPunctuation();
         }
     }
 
 
-
     /* Funciones para obtener las puntuaciones que hay en una jugada concreta */
-    orderValues(Values) {
-        // función auxiliar para ordenar el valor de un array de mayor a menor con valor de cartas o jugadas
-        let punct = "";
-        let valuesUpdated = this.updateValues(Values.sort((a, b) => b - a));
-        valuesUpdated.forEach(function(element){
-            punct += element.toString(16);
-        })
-        return punct;
-    }
-
-    getPuntcHiPaTwThFuFo (){
+    getGeneralPunctuation (){
 
         let cardValues = [this.card1.value, this.card2.value, this.card3.value, this.card4.value, this.card5.value];
 
@@ -305,62 +281,49 @@ class Hand {
 
         return repsValues.concat(restValues);
     }
-
-    getHighCardPuntc(){
-        /* Puntuación de la carta más alta. Igual al valor de las cartas ordenadas de mayor a menor.
-        (5 símbolos en Hexadecimal. ejemplo: 0xA8632) */
-
-       // return this.getPuntcHiPaTwThFuFo();
-    }
-    getPairPuntc(){
-        /* Puntuación de la pareja. Igual al valor de la pareja. Si es igual, valor de la carta más alta ordenada de mayor a menor.
-        (4 símbolos en Hexadecimal (1 para la pareja, y otros 3 para las otras tres cartas ordenadas de mayor a menor.))*/
+    getFlushPunctuation (){
 
         let cardValues = [this.card1.value, this.card2.value, this.card3.value, this.card4.value, this.card5.value];
 
-        /* buscar parejas y cartas individuales */
-        let reps = this.getReps(cardValues);
+        let orderValues = this.orderValues(cardValues);
+        console.log("Puntuación hex post: " + orderValues);
 
-        /* bloque para ordenar el valor de las parejas */
-        let pairValues = this.orderValues(reps[0]);
+        return orderValues;
+    }
+    orderValues(Values) {
+        // función auxiliar para ordenar el valor de un array de mayor a menor con valor de cartas o jugadas
+        let punct = "";
 
-        /* bloque para ordenar el valor de las cartas sueltas */
-        let restValues = this.orderValues(reps[1]);
+        let valuesUpdated = this.updateValues(Values.sort((a, b) => b - a));
 
-        console.log("Puntuación hex: " + pairValues.concat(restValues));
+        valuesUpdated.forEach(function(element){
+            punct += element.toString(16);
+        });
 
-        return pairValues.concat(restValues);
+        return punct;
     }
-    getTwoPairsPuntc(){
-        /* Puntuación de las dobles parejas. Igual al valor de la primera pareja + el valor de la segunda pareja + el valor de la última carta
-        (3 símbolos en Hexadecimal (1 para la pareja más alta, 1 para la pareja más baja y otro para la carta restante)) */
-        return this.getPairPuntc();
+    updateValues(Values) {
+        // Función auxiliar
+        cardValues.forEach(function(element, index){
+            if ( element === "10"){
+                Values[index] = "A";
+            }
+            if ( element === "11"){
+                Values[index] = "B";
+            }
+            if ( element === "12"){
+                Values[index] = "C";
+            }
+            if ( element === "13"){
+                Values[index] = "D";
+            }
+            if ( element === "14"){
+                Values[index] = "E";
+            }
+        });
+        return(Values);
     }
-    getThreeOfAKindPuntc(){
-        /* Puntuación del trio. Igual al valor del trio + valor de las otras dos cartas ordenadas de mayor a menor.
-        (3 símbolos en Hexadecimal (1 para el valor del trio, y dos para las cartas restantes ordenadas de mayor a menor)) */
-        return this.getPairPuntc();
-    }
-    getStraightPuntc(){
-        /* Puntuación de la escalera. Valor de la carta más alta de la escalera
-        * 1 símbolo en Hexadecimal */
-    }
-    getFlushPuntc(){
-        /* Puntuación de la carta más alta (todas de color). Igual al valor de las cartas ordenadas de mayor a menor
-        * (5 símbolos en Hexadecimal. ejemplo: 0xA8632) */
-       // return this.getHighCardPuntc();
 
-    }
-    getFullHousePuntc(){
-        /* Puntuación de un Full (trio + pareja). Igual al valor del trio + el valor de la pareja
-        * (2 símbolos en Hexadecimal */
-    }
-    getFourOfAKindPuntc(){
-        /* Puntuación del poker (4 cartas iguales). Igual al valor del poker + el valor de la carta restante. */
-    }
-    getStraightflushPuntc(){
-        /* Puntuación de la carta más alta */
-    }
 
 }
 
