@@ -52,9 +52,11 @@ class Hand {
         return [reps.length, rest.length];
     }
 
+
     existStraightflush () {
         return false;
     }
+
     existFourOfAKind () {
         let cardValues = [this.card1.value, this.card2.value, this.card3.value, this.card4.value, this.card5.value];
 
@@ -66,6 +68,7 @@ class Hand {
             return false;
         }
     }
+
     existFullHouse () {
         let cardValues = [this.card1.value, this.card2.value, this.card3.value, this.card4.value, this.card5.value];
 
@@ -77,11 +80,20 @@ class Hand {
             return false;
         }
     }
-    existFlush () {
-        let cardValues = [this.card1.value, this.card2.value, this.card3.value, this.card4.value, this.card5.value];
 
-        return false;
+    existFlush () {
+        let cardSuites = [this.card1.suite, this.card2.suite, this.card3.suite, this.card4.suite, this.card5.suite];
+        let output = true;
+        cardSuites.forEach(function(element, index){
+            if (index !== 0) {
+                if (element !== cardSuites[index - 1]){
+                    output = false;
+                }
+            }
+        });
+        return output;
     }
+
     existStraight () {
         let cardValues = [this.card1.value, this.card2.value, this.card3.value, this.card4.value, this.card5.value];
         let output = true;
@@ -102,6 +114,7 @@ class Hand {
         return output;
 
     }
+
     existThreeOfAKind () {
         let cardValues = [this.card1.value, this.card2.value, this.card3.value, this.card4.value, this.card5.value];
 
