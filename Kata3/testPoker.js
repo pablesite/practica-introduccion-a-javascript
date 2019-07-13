@@ -9,8 +9,12 @@ se empiueza la partida, se ejecuta y se comprueba el resultado.
 
 let Hand = require("./Hand");
 
+/*
 let handPlayer1 = new Hand.Hand("2H", "3D", "5S", "9C", "KD");
 let handPlayer2 = new Hand.Hand("2C", "3H", "4S", "8C", "AH");
+*/
+let handPlayer1 = new Hand.Hand("2H", "4D", "4S", "6C", "KD");
+let handPlayer2 = new Hand.Hand("2H", "3D", "4S", "6C", "KD");
 
 try {
     if(!handPlayer1.validateHand() || !handPlayer2.validateHand() )
@@ -48,9 +52,10 @@ try {
                     Lo único que hay que hacer es comparar esta cadena transformada a decimal (parseInt(hex, 16)) .*/
                     punctuationPlayer1 = parseInt(handPlayer1.getPunctuation(playPlayer1),16);
                     punctuationPlayer2 = parseInt(handPlayer2.getPunctuation(playPlayer2), 16);
-                    console.log(handPlayer1.getPunctuation(playPlayer1) + " PUNTUACIÓN calculada reciente.")
-                    console.log(punctuationPlayer1)
-                    console.log(punctuationPlayer2)
+
+
+                    console.log("PUNTUACIÓN player 1. " + punctuationPlayer1)
+                    console.log("PUNTUACIÓN player 2. " + punctuationPlayer2)
 
                     if (punctuationPlayer1  > punctuationPlayer2 ) {
                         console.log("Gana el jugador 1. " + handPlayer1.getTypeHand(playPlayer1) /*+ handPlayer1.typePunctuationPlayer1(punctuationPlayer1)*/);

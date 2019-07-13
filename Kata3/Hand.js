@@ -27,14 +27,71 @@ class Hand {
         }
     }
 
+    existStraightflush () {
+        return false;
+    }
+    existFourOfAKind () {
+        return false;
+    }
+    existFullHouse () {
+        return false;
+    }
+    existFlush () {
+        return false;
+    }
+    existStraight () {
+        return false;
+    }
+    existThreeOfAKind () {
+        return false;
+    }
+    existTwoPairs () {
+        return false;
+    }
+    existPair () {
+        return false;
+    }
+
+
     /* Aquí pondremos las comprobaciones para saber qué mano tiene el juegador.
     * Devuelve un valor de 1 a 9, siendo el 1 el valor de carta más alta, y el 9 la escalera de color.
     * ¿Tiene escalera de color? No
     * ¿Tiene poker? Sí --> devuelve 8.
     * */
     getPlayHand(restrict) {
-        //let x = this.card1;
-        return 1;
+        let playHand = [];
+
+        // Se calcula de mayor a menor si la mano cumple las condiciones.
+        // Cuando cumple se añade a un array el valor de lo que ha cumplido.
+        if(this.existStraightflush()) {
+            playHand.push(9);
+        }
+        if (this.existFourOfAKind()) {
+            playHand.push(8);
+        }
+        if (this.existFullHouse()) {
+            playHand.push(7);
+        }
+        if (this.existFlush()) {
+            playHand.push(6);
+        }
+        if (this.existStraight()) {
+            playHand.push(5);
+        }
+        if (this.existThreeOfAKind()) {
+            playHand.push(4);
+        }
+        if (this.existTwoPairs()) {
+            playHand.push(3);
+        }
+        if (this.existPair()) {
+            playHand.push(2);
+        }
+            playHand.push(1);
+
+
+        // El array se compara con restrict, y devuelve hasta el valor restrict
+        return playHand.find(value => value <= restrict);
 
     }
 
@@ -117,29 +174,60 @@ class Hand {
 
     }
 
-    
+    /* bloque para ordenar el valor de un array con valor de cartas o jugadas */
+    orderValues(Values) {
+        let punct = "";
+        let valuesUpdated = this.updateValues(Values.sort((a, b) => b - a));
+        valuesUpdated.forEach(function(element){
+            punct += element.toString(16);
+        })
+        return punct;
+    }
 
     getHighCardPuntc(){
         /* Puntuación de la carta más alta. Igual al valor de las cartas ordenadas de mayor a menor.
         (5 símbolos en Hexadecimal. ejemplo: 0xA8632) */
-
-        let punctuation = "";
         let cardValues = [this.card1.value, this.card2.value, this.card3.value, this.card4.value, this.card5.value];
 
-        let cardValuesSort = cardValues.sort((a, b) => b - a);
-        let cardValuesUpdated = this.updateValues(cardValuesSort);
+        /* bloque para ordenar el valor de las cartas */
 
-        cardValuesUpdated.forEach(function(element){
-            punctuation += element.toString(16);
-        })
+        console.log("Puntuación hex: " + this.orderValues(cardValues));
 
-        return punctuation;
+        return this.orderValues(cardValues);
     }
 
     getPairPuntc(){
         /* Puntuación de la pareja. Igual al valor de la pareja. Si es igual, valor de la carta más alta ordenada de mayor a menor.
         (4 símbolos en Hexadecimal (1 para la pareja, y otros 3 para las otras tres cartas ordenadas de mayor a menor.))*/
 
+        let cardValues = [this.card1.value, this.card2.value, this.card3.value, this.card4.value, this.card5.value];
+
+        let reps = [];
+        let temp = [];
+        let rest = [];
+
+        /* bloque para buscar parejas y cartas individuales */
+        cardValues.forEach((value,index)=>{
+            temp = Object.assign([],cardValues); //Copiado de elemento
+            temp.splice(index,1); //Se elimina el elemnto q se compara
+            /* Se busca en temp el elemento, y en repetido para ver si esta ingresado al array.
+             * indexOf devuelve -1 si el elemento no se encuetra
+             */
+            if(temp.indexOf(value)!=-1 && reps.indexOf(value)==-1) {
+                reps.push(value.toString(16));
+            }else if (temp.indexOf(value)===-1){
+                rest.push(value.toString(16));
+            }
+        });
+
+        /* bloque para ordenar el valor de las parejas */
+        let pairValues = this.orderValues(reps);
+        /* bloque para ordenar el valor de las cartas sueltas */
+        let restValues = this.orderValues(rest);
+
+        console.log("Puntuación hex: " + pairValues.concat(restValues));
+
+        return pairValues.concat(restValues);
     }
 
     getTwoPairsPuntc(){
