@@ -46,7 +46,7 @@ class Hand {
         return false;
     }
     existTwoPairs () {
-        return false;
+        return true;
     }
     existPair () {
         return false;
@@ -233,6 +233,7 @@ class Hand {
     getTwoPairsPuntc(){
         /* Puntuación de las dobles parejas. Igual al valor de la primera pareja + el valor de la segunda pareja + el valor de la última carta
         (3 símbolos en Hexadecimal (1 para la pareja más alta, 1 para la pareja más baja y otro para la carta restante)) */
+        return this.getPairPuntc();
     }
 
     getThreeOfAKindPuntc(){
