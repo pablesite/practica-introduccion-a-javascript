@@ -13,7 +13,7 @@ let Hand = require("./Hand");
 let handPlayer1 = new Hand.Hand("2H", "3D", "5S", "9C", "KD");
 let handPlayer2 = new Hand.Hand("2C", "3H", "4S", "8C", "AH");
 */
-let handPlayer1 = new Hand.Hand("AH", "AH", "AD", "AH", "9H");
+let handPlayer1 = new Hand.Hand("2H", "KH", "4H", "3H", "AH");
 let handPlayer2 = new Hand.Hand("AH", "QD", "KS", "JC", "TD");
 
 try {

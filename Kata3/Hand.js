@@ -54,7 +54,13 @@ class Hand {
 
 
     existStraightflush () {
-        return false;
+
+        if (this.existFlush() && this.existStraight()){
+            return true;
+        } else {
+            return false;
+        }
+
     }
 
     existFourOfAKind () {
@@ -99,7 +105,6 @@ class Hand {
         let output = true;
 
         cardValues.sort((a, b) => a - b).forEach(function(element, index) {
-            console.log(element)
             if (index != 0){
                 /* si la diferencia entre un número y el siguiente no es 1 o si
                 la diferencia no es 9 (escalera de 2 a A), entonces false */
@@ -107,7 +112,6 @@ class Hand {
 
                         output = false;
                 }
-                console.log("¿ESCALERA? " + output)
             }
         });
 
