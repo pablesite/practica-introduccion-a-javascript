@@ -3,14 +3,13 @@
 
 class Card {
     constructor (value,suit){
-
         this.value = value;
         this.suite = suit;
-
     }
 
+    /** Función auxiliar para cambiar símbolos de cartas de poker a decimal. Es importante para poder usar funciones
+     * para ordenar arrays. **/
     updateValues() {
-
         if (this.value === "T") {
             this.value = "10";
         }
@@ -42,16 +41,13 @@ class Card {
             output = false;
         }
 
-        //Aprovecho y actualizo los símbolos que no son números.
+        // Una vez valido, también actualizo los símbolos para poder trabajar con ellos más tarde.
         this.updateValues();
 
         return output;
     }
 
-
 }
-
-
 
 
 exports.Card = Card;

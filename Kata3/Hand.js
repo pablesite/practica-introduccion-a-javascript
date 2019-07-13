@@ -17,7 +17,6 @@ class Hand {
         this.card4 = new Card.Card(card4Split[0], card4Split[1]);
         this.card5 = new Card.Card(card5Split[0], card5Split[1]);
 
-
     }
 
     validateHand () {
@@ -29,20 +28,17 @@ class Hand {
         }
     }
 
-    /* Funciones para evaluar qué jugada hay en la mano de cartas */
+    /** Funciones para evaluar qué jugada hay en la mano de cartas **/
     getReps(cardValues) {
-        // Función auxiliar para validar gran parte de las jugadas.
+        /** Función auxiliar para validar gran parte de las jugadas. **/
         let temp = [];
         let reps = [];
         let rest = [];
 
-        /* bloque para buscar nº de repeticiones de cartas y nº de cartas individuales */
+        // bloque para buscar nº de repeticiones de cartas y nº de cartas individuales
         cardValues.forEach((value,index)=>{
-            temp = Object.assign([],cardValues); //Copiado de elemento
-            temp.splice(index,1); //Se elimina el elemnto q se compara
-            /* Se busca en temp el elemento, y en repetido para ver si esta ingresado al array.
-             * indexOf devuelve -1 si el elemento no se encuetra
-             */
+            temp = Object.assign([],cardValues);
+            temp.splice(index,1);
             if(temp.indexOf(value)!=-1 && reps.indexOf(value)==-1) {
                 reps.push(value.toString(16));
             }else if (temp.indexOf(value)===-1){
@@ -52,15 +48,12 @@ class Hand {
 
         return [reps, rest];
     }
-
-    existStraightflush () {
-
+    existStraightFlush () {
         if (this.existFlush() && this.existStraight()){
             return true;
         } else {
             return false;
         }
-
     }
     existFourOfAKind () {
         let cardValues = [this.card1.value, this.card2.value, this.card3.value, this.card4.value, this.card5.value];
@@ -147,51 +140,40 @@ class Hand {
             return false;
         }
     }
-
-    getPlayHand(restrict) {
-        /* Aquí pondremos las comprobaciones para saber qué mano tiene el juegador.
-        * Devuelve un valor de 1 a 9, siendo el 1 el valor de carta más alta, y el 9 la escalera de color.
+    // Main
+    getPlayHand() {
+        /** Aquí pondremos las comprobaciones para saber qué mano tiene el juegador.
+        * Devuelve un valor de 1 a 9, siendo el 1 la jugada "carta más alta", y el 9 la "escalera de color".
         * ¿Tiene escalera de color? No
         * ¿Tiene poker? Sí --> devuelve 8.
-        * */
-        let playHand = [];
+        * **/
+        let playHand = 1;
         // Se calcula de mayor a menor si la mano cumple las condiciones.
         // Cuando cumple se añade a un array el valor de lo que ha cumplido.
-        if(this.existStraightflush()) {
-            playHand.push(9);
-        }
-        if (this.existFourOfAKind()) {
-            playHand.push(8);
-        }
-        if (this.existFullHouse()) {
-            playHand.push(7);
-        }
-        if (this.existFlush()) {
-            playHand.push(6);
-        }
-        if (this.existStraight()) {
-            playHand.push(5);
-        }
-        if (this.existThreeOfAKind()) {
-            playHand.push(4);
-        }
-        if (this.existTwoPairs()) {
-            playHand.push(3);
-        }
-        if (this.existPair()) {
-            playHand.push(2);
-        }
-            playHand.push(1);
 
-        // El array se compara con restrict, y devuelve hasta el valor restrict
-        return playHand.find(value => value <= restrict);
-
+        if(this.existStraightFlush()) {
+            playHand = 9;
+        } else if (this.existFourOfAKind()) {
+            playHand = 8;
+        } else if (this.existFullHouse()) {
+            playHand = 7;
+        } else if (this.existFlush()) {
+            playHand = 6;
+        }else if (this.existStraight()) {
+            playHand = 5;
+        }else if (this.existThreeOfAKind()) {
+            playHand = 4;
+        }else if (this.existTwoPairs()) {
+            playHand = 3;
+        }else if (this.existPair()) {
+            playHand = 2;
+        }
+        return playHand;
     }
 
-
-    /* Revisar los nombres de las funciones */
+    /** Función auxiliar que devuelve el nombre de las jugadas. Es útil para escribir en consola con qué jugada ha ganado
+     * el jugador. */
     getTypeHand(playHand) {
-        /* Devolvemos el tipo de jugada, para escribir en consola al ejecutar testPoker */
         switch (playHand) {
             case 1:
                 return "High Card";
@@ -221,109 +203,65 @@ class Hand {
                 return "Straight flush";
                 break;
         }
-
-    }
-    getPunctuation(playHand){
-        /* Llama a la función de conseguir la puntuación de la jugada que toque, entre las 9 funciones siguientes.*/
-        switch (playHand) {
-            case 1:
-                /* Puntuación de la carta más alta. Igual al valor de las cartas ordenadas de mayor a menor.
-                (5 símbolos en Hexadecimal. ejemplo: 0xA8632) */
-                return this.getGeneralPunctuation();
-            case 2:
-                /* Puntuación de la pareja. Igual al valor de la pareja. Si es igual, valor de la carta más alta ordenada de mayor a menor.
-                (4 símbolos en Hexadecimal (1 para la pareja, y otros 3 para las otras tres cartas ordenadas de mayor a menor.))*/
-                return this.getGeneralPunctuation();
-            case 3:
-                /* Puntuación de las dobles parejas. Igual al valor de la primera pareja + el valor de la segunda pareja + el valor de la última carta
-                (3 símbolos en Hexadecimal (1 para la pareja más alta, 1 para la pareja más baja y otro para la carta restante)) */
-                return this.getGeneralPunctuation();
-            case 4:
-                /* Puntuación del trio. Igual al valor del trio + valor de las otras dos cartas ordenadas de mayor a menor.
-                (3 símbolos en Hexadecimal (1 para el valor del trio, y dos para las cartas restantes ordenadas de mayor a menor)) */
-                return this.getGeneralPunctuation();
-            case 5:
-                /* Puntuación de la escalera. Valor de la carta más alta de la escalera
-                * 1 símbolo en Hexadecimal */
-                return this.getGeneralPunctuation();
-            case 6:
-                /* Puntuación de la carta más alta (todas de color). Igual al valor de las cartas ordenadas de mayor a menor
-                * (5 símbolos en Hexadecimal. ejemplo: 0xA8632) */
-                return this.getFlushPunctuation();
-            case 7:
-                /* Puntuación de un Full (trio + pareja). Igual al valor del trio + el valor de la pareja
-                * (2 símbolos en Hexadecimal */
-                return this.getGeneralPunctuation();
-            case 8:
-                /* Puntuación del poker (4 cartas iguales). Igual al valor del poker + el valor de la carta restante. */
-                return this.getGeneralPunctuation();
-            case 9:
-                /* Puntuación de la carta más alta */
-                return this.getGeneralPunctuation();
-        }
     }
 
+    /** Funciones para obtener las puntuaciones que hay en una jugada concreta. Sólo usado en el desempate. **/
+    updateValues(values) {
+        /** Función auxiliar que convierte los valores decimales del 10 en adelante a hexadecimales. Importante para poder
+         * comparar las puntuaciones de cada jugada. **/
+        values.forEach(function(element, index){
+            if ( element === "10"){
+                values[index] = "A";
+            }
+            if ( element === "11"){
+                values[index] = "B";
+            }
+            if ( element === "12"){
+                values[index] = "C";
+            }
+            if ( element === "13"){
+                values[index] = "D";
+            }
+            if ( element === "14"){
+                values[index] = "E";
+            }
+        });
 
-    /* Funciones para obtener las puntuaciones que hay en una jugada concreta */
-    getGeneralPunctuation (){
 
-        let cardValues = [this.card1.value, this.card2.value, this.card3.value, this.card4.value, this.card5.value];
-
-        /* buscar repeticiones de cartas y cartas individuales */
-        let reps = this.getReps(cardValues);
-
-        /* bloque para ordenar el valor de las repeticiones */
-        let repsValues = this.orderValues(reps[0]);
-        /* bloque para ordenar el valor de las cartas individuales */
-        let restValues = this.orderValues(reps[1]);
-
-        console.log("Puntuación hex: " + repsValues.concat(restValues));
-
-        return repsValues.concat(restValues);
+        return(values);
     }
-    getFlushPunctuation (){
-
-        let cardValues = [this.card1.value, this.card2.value, this.card3.value, this.card4.value, this.card5.value];
-
-        let orderValues = this.orderValues(cardValues);
-        console.log("Puntuación hex post: " + orderValues);
-
-        return orderValues;
-    }
-    orderValues(Values) {
-        // función auxiliar para ordenar el valor de un array de mayor a menor con valor de cartas o jugadas
+    orderValues(values) {
+        /** Función auxiliar para ordenar el valor de un array de mayor a menor con valor de cartas o jugadas**/
         let punct = "";
-
-        let valuesUpdated = this.updateValues(Values.sort((a, b) => b - a));
-
+        let valuesUpdated = this.updateValues(values.sort((a, b) => b - a));
         valuesUpdated.forEach(function(element){
             punct += element.toString(16);
         });
-
         return punct;
     }
-    updateValues(Values) {
-        // Función auxiliar
-        cardValues.forEach(function(element, index){
-            if ( element === "10"){
-                Values[index] = "A";
-            }
-            if ( element === "11"){
-                Values[index] = "B";
-            }
-            if ( element === "12"){
-                Values[index] = "C";
-            }
-            if ( element === "13"){
-                Values[index] = "D";
-            }
-            if ( element === "14"){
-                Values[index] = "E";
-            }
-        });
-        return(Values);
-    }
+    // Main
+    getPunctuation(playHand){
+        /** Función genérica que calcula la puntuación de cada jugada. Es apropiada para todas las jugadas excepto para
+         * "color" o "flush" (6). Por la sencillez de esta, se devuelve la puntuación directamente con una llamada a ordenar
+         * las cartas.
+         */
+        let cardValues = [this.card1.value, this.card2.value, this.card3.value, this.card4.value, this.card5.value];
 
+        if (playHand === 6) {
+            return this.orderValues(cardValues);
+        } else {
+            // buscar repeticiones de cartas y cartas individuales
+            let reps = this.getReps(cardValues);
+
+            // bloque para ordenar el valor de las repeticiones
+            let repsValues = this.orderValues(reps[0]);
+            // bloque para ordenar el valor de las cartas individuales
+            let restValues = this.orderValues(reps[1]);
+
+            return repsValues.concat(restValues);
+        }
+
+    }
 
 }
 
