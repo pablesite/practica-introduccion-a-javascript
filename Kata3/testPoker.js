@@ -13,8 +13,8 @@ let Hand = require("./Hand");
 let handPlayer1 = new Hand.Hand("2H", "3D", "5S", "9C", "KD");
 let handPlayer2 = new Hand.Hand("2C", "3H", "4S", "8C", "AH");
 */
-let handPlayer1 = new Hand.Hand("2H", "2D", "4S", "4C", "KD");
-let handPlayer2 = new Hand.Hand("2H", "5D", "5S", "4C", "4D");
+let handPlayer1 = new Hand.Hand("9H", "9D", "9S", "9C", "4D");
+let handPlayer2 = new Hand.Hand("2H", "8D", "9S", "9C", "4D");
 
 try {
     if(!handPlayer1.validateHand() || !handPlayer2.validateHand() )
@@ -39,6 +39,7 @@ try {
             * de 8 hacia abajo. En el caso inicial, no hay restricciones, por lo que el parámetro será un 9.
             */
 
+
             if (restrict >= i) {
                 playPlayer1 = handPlayer1.getPlayHand(restrict);
                 playPlayer2 = handPlayer2.getPlayHand(restrict);
@@ -47,15 +48,20 @@ try {
                 if (playPlayer1 > playPlayer2 ) {
                     console.log("Gana el jugador 1. " + handPlayer1.getTypeHand(playPlayer1));
                     restrict = 0;
+
                 } else if (playPlayer1  ===  playPlayer2) {
                     /* Cada jugada devuelve un string de 5 símbolos hexadecimales con el orden que ha resultado la puntuación de la mano.
                     Lo único que hay que hacer es comparar esta cadena transformada a decimal (parseInt(hex, 16)) .*/
                     punctuationPlayer1 = parseInt(handPlayer1.getPunctuation(playPlayer1),16);
                     punctuationPlayer2 = parseInt(handPlayer2.getPunctuation(playPlayer2), 16);
 
+                    /*NOTA: Si las parejas o las dobles parejas son iguales, se ganará por la carta más alta (en caso de que sea distinta.
+                    Y sin embargo, el programa imprimirá que se ha ganado con una jugada de parejas o parejas dobles...¿este detalle es correcto?
+                    */
 
                     console.log("PUNTUACIÓN player 1. " + punctuationPlayer1)
                     console.log("PUNTUACIÓN player 2. " + punctuationPlayer2)
+
 
                     if (punctuationPlayer1  > punctuationPlayer2 ) {
                         console.log("Gana el jugador 1. " + handPlayer1.getTypeHand(playPlayer1) /*+ handPlayer1.typePunctuationPlayer1(punctuationPlayer1)*/);

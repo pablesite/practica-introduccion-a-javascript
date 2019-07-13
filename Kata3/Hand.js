@@ -16,25 +16,66 @@ class Hand {
         this.card3 = new Card.Card(card3Split[0], card3Split[1]);
         this.card4 = new Card.Card(card4Split[0], card4Split[1]);
         this.card5 = new Card.Card(card5Split[0], card5Split[1]);
+
+
     }
 
     validateHand () {
         if(!this.card1.validateCard() || !this.card2.validateCard() || !this.card3.validateCard() || !this.card4.validateCard() || !this.card5.validateCard()){
             return false;
         }else {
-
             return true;
+
         }
+    }
+
+    getReps(cardValues) {
+
+        let temp = [];
+        let reps = [];
+        let rest = [];
+
+        /* bloque para buscar nº de repeticiones de cartas y nº de cartas individuales */
+        cardValues.forEach((value,index)=>{
+            temp = Object.assign([],cardValues); //Copiado de elemento
+            temp.splice(index,1); //Se elimina el elemnto q se compara
+            /* Se busca en temp el elemento, y en repetido para ver si esta ingresado al array.
+             * indexOf devuelve -1 si el elemento no se encuetra
+             */
+            if(temp.indexOf(value)!=-1 && reps.indexOf(value)==-1) {
+                reps.push(value.toString(16));
+            }else if (temp.indexOf(value)===-1){
+                rest.push(value.toString(16));
+            }
+        });
+
+        return [reps.length, rest.length];
     }
 
     existStraightflush () {
         return false;
     }
     existFourOfAKind () {
-        return false;
+        let cardValues = [this.card1.value, this.card2.value, this.card3.value, this.card4.value, this.card5.value];
+
+        let reps = this.getReps(cardValues);
+
+        if (reps[0] === 1 && reps[1] === 1 ) {
+            return true;
+        } else {
+            return false;
+        }
     }
     existFullHouse () {
-        return false;
+        let cardValues = [this.card1.value, this.card2.value, this.card3.value, this.card4.value, this.card5.value];
+
+        let reps = this.getReps(cardValues);
+
+        if (reps[0] === 2 && reps[1] === 0 ) {
+            return true;
+        } else {
+            return false;
+        }
     }
     existFlush () {
         return false;
@@ -43,13 +84,39 @@ class Hand {
         return false;
     }
     existThreeOfAKind () {
-        return false;
+        let cardValues = [this.card1.value, this.card2.value, this.card3.value, this.card4.value, this.card5.value];
+
+        let reps = this.getReps(cardValues);
+
+        if (reps[0] === 1 && reps[1] === 2 ) {
+            return true;
+        } else {
+            return false;
+        }
     }
+
     existTwoPairs () {
-        return true;
+        let cardValues = [this.card1.value, this.card2.value, this.card3.value, this.card4.value, this.card5.value];
+
+        let reps = this.getReps(cardValues);
+
+        if (reps[0] === 2 && reps[1] === 1 ) {
+            return true;
+        } else {
+            return false;
+        }
     }
+
     existPair () {
-        return false;
+        let cardValues = [this.card1.value, this.card2.value, this.card3.value, this.card4.value, this.card5.value];
+
+        let reps = this.getReps(cardValues);
+
+        if (reps[0] === 0 && reps[1] === 5 ) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 
@@ -88,7 +155,6 @@ class Hand {
             playHand.push(2);
         }
             playHand.push(1);
-
 
         // El array se compara con restrict, y devuelve hasta el valor restrict
         return playHand.find(value => value <= restrict);
@@ -174,6 +240,7 @@ class Hand {
 
     }
 
+
     /* bloque para ordenar el valor de un array con valor de cartas o jugadas */
     orderValues(Values) {
         let punct = "";
@@ -187,8 +254,8 @@ class Hand {
     getHighCardPuntc(){
         /* Puntuación de la carta más alta. Igual al valor de las cartas ordenadas de mayor a menor.
         (5 símbolos en Hexadecimal. ejemplo: 0xA8632) */
-        let cardValues = [this.card1.value, this.card2.value, this.card3.value, this.card4.value, this.card5.value];
 
+        let cardValues = [this.card1.value, this.card2.value, this.card3.value, this.card4.value, this.card5.value];
         /* bloque para ordenar el valor de las cartas */
 
         console.log("Puntuación hex: " + this.orderValues(cardValues));
