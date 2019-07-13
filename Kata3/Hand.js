@@ -17,6 +17,9 @@ class Hand {
         this.card4 = new Card.Card(card4Split[0], card4Split[1]);
         this.card5 = new Card.Card(card5Split[0], card5Split[1]);
 
+        this.cardValues = [this.card1.value, this.card2.value, this.card3.value, this.card4.value, this.card5.value];
+        this.cardSuites = [this.card1.suite, this.card2.suite, this.card3.suite, this.card4.suite, this.card5.suite];
+
     }
 
     validateHand () {
@@ -56,9 +59,7 @@ class Hand {
         }
     }
     existFourOfAKind () {
-        let cardValues = [this.card1.value, this.card2.value, this.card3.value, this.card4.value, this.card5.value];
-
-        let reps = this.getReps(cardValues);
+        let reps = this.getReps(this.cardValues);
 
         if (reps[0].length === 1 && reps[1].length === 1 ) {
             return true;
@@ -67,9 +68,7 @@ class Hand {
         }
     }
     existFullHouse () {
-        let cardValues = [this.card1.value, this.card2.value, this.card3.value, this.card4.value, this.card5.value];
-
-        let reps = this.getReps(cardValues);
+        let reps = this.getReps(this.cardValues);
 
         if (reps[0].length === 2 && reps[1].length === 0 ) {
             return true;
@@ -78,8 +77,9 @@ class Hand {
         }
     }
     existFlush () {
-        let cardSuites = [this.card1.suite, this.card2.suite, this.card3.suite, this.card4.suite, this.card5.suite];
         let output = true;
+
+        let cardSuites = this.cardSuites;
         cardSuites.forEach(function(element, index){
             if (index !== 0) {
                 if (element !== cardSuites[index - 1]){
@@ -90,15 +90,14 @@ class Hand {
         return output;
     }
     existStraight () {
-        let cardValues = [this.card1.value, this.card2.value, this.card3.value, this.card4.value, this.card5.value];
         let output = true;
 
+        let cardValues = this.cardValues;
         cardValues.sort((a, b) => a - b).forEach(function(element, index) {
             if (index != 0){
                 /* si la diferencia entre un número y el siguiente no es 1 o si
                 la diferencia no es 9 (escalera de 2 a A), entonces false */
                 if ((element -1) != cardValues[index-1] && ((element -9) != cardValues[index-1])) {
-
                         output = false;
                 }
             }
@@ -108,9 +107,7 @@ class Hand {
 
     }
     existThreeOfAKind () {
-        let cardValues = [this.card1.value, this.card2.value, this.card3.value, this.card4.value, this.card5.value];
-
-        let reps = this.getReps(cardValues);
+        let reps = this.getReps(this.cardValues);
 
         if (reps[0].length === 1 && reps[1].length === 2 ) {
             return true;
@@ -119,9 +116,7 @@ class Hand {
         }
     }
     existTwoPairs () {
-        let cardValues = [this.card1.value, this.card2.value, this.card3.value, this.card4.value, this.card5.value];
-
-        let reps = this.getReps(cardValues);
+        let reps = this.getReps(this.cardValues);
 
         if (reps[0].length === 2 && reps[1].length === 1 ) {
             return true;
@@ -130,9 +125,7 @@ class Hand {
         }
     }
     existPair () {
-        let cardValues = [this.card1.value, this.card2.value, this.card3.value, this.card4.value, this.card5.value];
-
-        let reps = this.getReps(cardValues);
+        let reps = this.getReps(this.cardValues);
 
         if (reps[0].length === 1 && reps[1].length === 3 ) {
             return true;
@@ -147,6 +140,7 @@ class Hand {
         * ¿Tiene escalera de color? No
         * ¿Tiene poker? Sí --> devuelve 8.
         * **/
+
         let playHand = 1;
         // Se calcula de mayor a menor si la mano cumple las condiciones.
         // Cuando cumple se añade a un array el valor de lo que ha cumplido.
@@ -206,34 +200,33 @@ class Hand {
     }
 
     /** Funciones para obtener las puntuaciones que hay en una jugada concreta. Sólo usado en el desempate. **/
-    updateValues(values) {
+    updateValues(cardValues) {
         /** Función auxiliar que convierte los valores decimales del 10 en adelante a hexadecimales. Importante para poder
          * comparar las puntuaciones de cada jugada. **/
-        values.forEach(function(element, index){
+        cardValues.forEach(function(element, index){
             if ( element === "10"){
-                values[index] = "A";
+                cardValues[index] = "A";
             }
             if ( element === "11"){
-                values[index] = "B";
+                cardValues[index] = "B";
             }
             if ( element === "12"){
-                values[index] = "C";
+                cardValues[index] = "C";
             }
             if ( element === "13"){
-                values[index] = "D";
+                cardValues[index] = "D";
             }
             if ( element === "14"){
-                values[index] = "E";
+                cardValues[index] = "E";
             }
         });
 
-
-        return(values);
+        return(cardValues);
     }
-    orderValues(values) {
+    orderValues(cardValues) {
         /** Función auxiliar para ordenar el valor de un array de mayor a menor con valor de cartas o jugadas**/
         let punct = "";
-        let valuesUpdated = this.updateValues(values.sort((a, b) => b - a));
+        let valuesUpdated = this.updateValues(cardValues.sort((a, b) => b - a));
         valuesUpdated.forEach(function(element){
             punct += element.toString(16);
         });
@@ -245,13 +238,11 @@ class Hand {
          * "color" o "flush" (6). Por la sencillez de esta, se devuelve la puntuación directamente con una llamada a ordenar
          * las cartas.
          */
-        let cardValues = [this.card1.value, this.card2.value, this.card3.value, this.card4.value, this.card5.value];
-
         if (playHand === 6) {
-            return this.orderValues(cardValues);
+            return this.orderValues(this.cardValues);
         } else {
             // buscar repeticiones de cartas y cartas individuales
-            let reps = this.getReps(cardValues);
+            let reps = this.getReps(this.cardValues);
 
             // bloque para ordenar el valor de las repeticiones
             let repsValues = this.orderValues(reps[0]);

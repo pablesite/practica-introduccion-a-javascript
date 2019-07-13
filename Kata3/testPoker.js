@@ -34,7 +34,7 @@ Este es el fichero main, desde donde:
 
 let Game = require("./Game");
 
-let game = new Game.Game (["3H", "3C", "7H", "5H", "KH"], ["9D", "9C", "8C", "5C", "AC"]);
+let game = new Game.Game (["TH", "TC", "TS", "TD", "KH"], ["9D", "4D", "8C", "QC", "KC"]);
 
     try {
         if(!game.validateGame() )

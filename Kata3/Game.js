@@ -70,12 +70,8 @@ class Game {
         *   2. el valor de la carta individual más alta.
         *   3. el valor de la carta individual siguiente
         **/
-
         let playPlayer1 = this.handPlayer1.getPlayHand();
         let playPlayer2 = this.handPlayer2.getPlayHand();
-
-        console.log(this.handPlayer1)
-        console.log(this.handPlayer2)
 
         if (playPlayer1 > playPlayer2 ) {
             console.log("Gana el jugador 1. " + this.handPlayer1.getTypeHand(playPlayer1));
