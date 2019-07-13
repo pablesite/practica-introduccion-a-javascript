@@ -1,4 +1,4 @@
-/*## Sistema Romano
+/**## Sistema Romano
 #### Símbolos
 
 Romano | Árabe
@@ -24,7 +24,7 @@ Sólo se contemplan números entre el 1 y el 3999
 * C se resta de D y M
 * ADEMÁS, después de que uno de estos símbolos haga su función de resta, en el símbolo siguiente no puede volver a ir ni él mismo ni ninguno de los mayores a él.
 * Los símbolos V, L y D no pueden colocarse a la izquierda de otro mayor.
-*/
+**/
 
 function validateSimbols(arrayStr) {
 
@@ -85,7 +85,7 @@ function validateAnteMayor (arrayStr, simbol) {
 
 }
 
-/*
+/**
 * Recorro los símbolos de izquierda a derecha.
 * compruebo que sea más pequeño que el siguiente para que todo sea ok.
 * Si el siguiente es igual -->  el símbolo siguiente no puede ser mayor en ningún caso. Una vez repite, ya no puede restar
@@ -95,7 +95,7 @@ function validateAnteMayor (arrayStr, simbol) {
 * I se resta de V y X --> Si la comprobación es buena, entonces la cadena de números debe terminar tras la V o la X.
 * X se resta de L y C --> Si la comprobación es buena, entonces después sólo pueden venir símbolos V o I. (para esto jugaré con el array allowsimbols)
 * C se resta de D y M --> Si la comprobación es buena, entonces después sólo pueden venir símbolos L, X, V o I (para esto jugaré con el array allowsimbols)
-* */
+**/
 function validateBehaviourIXC (arrayStr) {
 
     let equivalence  = {
@@ -117,7 +117,7 @@ function validateBehaviourIXC (arrayStr) {
                 //el símbolo siguiente es más grande o igual, por lo tanto no hay que hacer nada especial.
                 simbolTemp = element;
             } else if (equivalence[simbolTemp] === equivalence[element]){
-                /* el símbolo siguiente no puede ser mayor en ningún caso. Una vez repite, ya no puede restar */
+                // el símbolo siguiente no puede ser mayor en ningún caso. Una vez repite, ya no puede restar
                 if (equivalence[arrayStr[n + 1]] > equivalence[simbolTemp]) {
                     output = false;
 
@@ -135,7 +135,6 @@ function validateBehaviourIXC (arrayStr) {
                             } else {
                                 if (arrayStr[n + 1] !== undefined) {
                                     output = false;
-
                                 }
                             }
                             break;
@@ -170,19 +169,19 @@ function validateBehaviourIXC (arrayStr) {
 
 }
 
-/* Función principal para validar números romanos */
+/** Función principal para validar números romanos **/
 function validateRomanNum (romanStr) {
 
     let arrayStr = romanStr.split("");
 
-    /* Si se introduce un símbolo que no se corresponde con los símbolos romanos, da error */
+    // Si se introduce un símbolo que no se corresponde con los símbolos romanos, da error
     if(!validateSimbols(arrayStr))
     {
         console.log ("En el número hay símbolos no reconocidos.");
         return false;
     }
 
-    /* Si se repite un simbolo más de 3 veces seguidas debe dar error */
+    // Si se repite un simbolo más de 3 veces seguidas debe dar error
      else if (!validateRepetitionsIXCM(arrayStr, "I") ||
          !validateRepetitionsIXCM(arrayStr, "X") ||
          !validateRepetitionsIXCM(arrayStr, "C") ||
@@ -198,7 +197,7 @@ function validateRomanNum (romanStr) {
          console.log ("El número romano no es correcto. Los símbolos I, X y C solamente pueden anteponerse a los dos símbolos que le siguen en la sucesión. Puede que haya introducido valores mayores de lo que corresponde tras una resta");
      }
 
-     /* Los símbolos V, L y D no pueden repetirse. */
+     // Los símbolos V, L y D no pueden repetirse.
      else if(arrayStr.filter(simbol => simbol === "V").length > 1 ||
              arrayStr.filter(simbol => simbol === "L").length > 1 ||
              arrayStr.filter(simbol => simbol === "D").length > 1 )
@@ -207,7 +206,7 @@ function validateRomanNum (romanStr) {
          return false;
      }
 
-     /* Los símbolos V, L y D no pueden colocarse a la izquierda de otro mayor */
+     // Los símbolos V, L y D no pueden colocarse a la izquierda de otro mayor
      else if (!validateAnteMayor(arrayStr, "V") ||
               !validateAnteMayor(arrayStr, "L") ||
               !validateAnteMayor(arrayStr, "D"))
@@ -215,14 +214,13 @@ function validateRomanNum (romanStr) {
          console.log ("El número romano no es correcto. Los símbolos V, L y D no pueden colocarse a la izquierda de otro mayor");
      }
 
-       /* El número es correcto*/
+       // El número es correcto
      else {
          console.log ("El número romano introducido es correcto.")
          return true;
      }
 
 }
-
 
 exports.validateRomanNum = validateRomanNum;
 

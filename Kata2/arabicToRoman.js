@@ -1,4 +1,4 @@
-/* Algoritmo Árabes a Romanos
+/** Algoritmo Árabes a Romanos
 * 1 Divido el número árabe original entre mil.
 *     1.a Si el resto (redondeado inferior) es = 0, no hago nada y paso a la siguiente.
 *     1.b Si el resto (redondeado inferior) es >= 1 y <= 3, asigno "M.." a la cadena), y resto numero * 1000 al original
@@ -12,7 +12,7 @@
 *     2.f Si el resto (redondeado inferior) es == 9, asigno "CM" a la cadena y resto numero * 100 al original.
 * 3 Lo mismo dividiendo entre 10
 * 4 Lo mismo con el resto que quede.
-* */
+**/
 
 function arabicToRoman (arabicNum) {
     if (arabicNum < 1 || arabicNum > 3999){
@@ -51,9 +51,6 @@ function arabicToRoman (arabicNum) {
         return str;
     }
 
-
-
 }
-
 
 exports.arabicToRoman = arabicToRoman;

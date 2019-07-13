@@ -1,10 +1,10 @@
-/* Algoritmo Romanos a Árabes
+/** Algoritmo Romanos a Árabes
 * - Leo de derecha a izquierda los símbolos
 * 1. El primero siempre se suma
 * 2. Leo el segundo (n), y comparo con el anterior (n-1)
 *   2. a Si n es igual o más grande que n-1, el n se suma al total.
 *   2. b Si n es más pequeño que n-1, n se resta al total.
-* */
+**/
 
 let testValidate = require("./validateRomanNumber");
 

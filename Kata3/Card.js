@@ -1,5 +1,5 @@
 
-/* Clase Carta */
+/** Clase Carta**/
 
 class Card {
     constructor (value,suit){
@@ -26,6 +26,7 @@ class Card {
         if (this.value === "A") {
             this.value = "14";
         }
+
     }
 
     validateCard(){

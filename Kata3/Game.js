@@ -1,7 +1,7 @@
 let Hand = require("./Hand");
 
 
-/** Clase Game **/
+/**Clase Game**/
 
 class Game {
 
@@ -27,6 +27,7 @@ class Game {
         }
 
     }
+
     validateRepeatsCards(){
         /** Recorro todas las cartas y almaceno un array con los valores de las 10 cartas.
          * Después busco si hay repetidos. Si no, perfecto. De lo contrario, hay una carta repetida.
@@ -44,7 +45,6 @@ class Game {
             return true;
         }
     }
-
     validateGame () {
         if(!this.validateRepeatsCards()){
             return false;

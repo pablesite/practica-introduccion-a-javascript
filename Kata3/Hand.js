@@ -1,6 +1,6 @@
 let Card = require("./Card");
 
-/* Clase Mano */
+/**Clase Mano**/
 
 class Hand {
 
@@ -17,9 +17,6 @@ class Hand {
         this.card4 = new Card.Card(card4Split[0], card4Split[1]);
         this.card5 = new Card.Card(card5Split[0], card5Split[1]);
 
-        this.cardValues = [this.card1.value, this.card2.value, this.card3.value, this.card4.value, this.card5.value];
-        this.cardSuites = [this.card1.suite, this.card2.suite, this.card3.suite, this.card4.suite, this.card5.suite];
-
     }
 
     validateHand () {
@@ -29,6 +26,9 @@ class Hand {
             return true;
 
         }
+    }
+    initializeCards (){
+        return [this.card1.value, this.card2.value, this.card3.value, this.card4.value, this.card5.value];;
     }
 
     /** Funciones para evaluar qué jugada hay en la mano de cartas **/
@@ -59,7 +59,8 @@ class Hand {
         }
     }
     existFourOfAKind () {
-        let reps = this.getReps(this.cardValues);
+        let cardValues = this.initializeCards();
+        let reps = this.getReps(cardValues);
 
         if (reps[0].length === 1 && reps[1].length === 1 ) {
             return true;
@@ -68,7 +69,8 @@ class Hand {
         }
     }
     existFullHouse () {
-        let reps = this.getReps(this.cardValues);
+        let cardValues = this.initializeCards();
+        let reps = this.getReps(cardValues);
 
         if (reps[0].length === 2 && reps[1].length === 0 ) {
             return true;
@@ -78,8 +80,8 @@ class Hand {
     }
     existFlush () {
         let output = true;
+        let cardSuites = [this.card1.suite, this.card2.suite, this.card3.suite, this.card4.suite, this.card5.suite];
 
-        let cardSuites = this.cardSuites;
         cardSuites.forEach(function(element, index){
             if (index !== 0) {
                 if (element !== cardSuites[index - 1]){
@@ -91,14 +93,14 @@ class Hand {
     }
     existStraight () {
         let output = true;
+        let cardValues = this.initializeCards();
 
-        let cardValues = this.cardValues;
         cardValues.sort((a, b) => a - b).forEach(function(element, index) {
             if (index != 0){
                 /* si la diferencia entre un número y el siguiente no es 1 o si
                 la diferencia no es 9 (escalera de 2 a A), entonces false */
-                if ((element -1) != cardValues[index-1] && ((element -9) != cardValues[index-1])) {
-                        output = false;
+                if ((element - 1) != cardValues[index-1] && ((element - 9) != cardValues[index-1])) {
+                    output = false;
                 }
             }
         });
@@ -107,7 +109,8 @@ class Hand {
 
     }
     existThreeOfAKind () {
-        let reps = this.getReps(this.cardValues);
+        let cardValues = this.initializeCards();
+        let reps = this.getReps(cardValues);
 
         if (reps[0].length === 1 && reps[1].length === 2 ) {
             return true;
@@ -116,7 +119,8 @@ class Hand {
         }
     }
     existTwoPairs () {
-        let reps = this.getReps(this.cardValues);
+        let cardValues = this.initializeCards();
+        let reps = this.getReps(cardValues);
 
         if (reps[0].length === 2 && reps[1].length === 1 ) {
             return true;
@@ -125,7 +129,8 @@ class Hand {
         }
     }
     existPair () {
-        let reps = this.getReps(this.cardValues);
+        let cardValues = this.initializeCards();
+        let reps = this.getReps(cardValues);
 
         if (reps[0].length === 1 && reps[1].length === 3 ) {
             return true;
@@ -238,11 +243,12 @@ class Hand {
          * "color" o "flush" (6). Por la sencillez de esta, se devuelve la puntuación directamente con una llamada a ordenar
          * las cartas.
          */
+        let cardValues = this.initializeCards();
         if (playHand === 6) {
-            return this.orderValues(this.cardValues);
+            return this.orderValues(cardValues);
         } else {
             // buscar repeticiones de cartas y cartas individuales
-            let reps = this.getReps(this.cardValues);
+            let reps = this.getReps(cardValues);
 
             // bloque para ordenar el valor de las repeticiones
             let repsValues = this.orderValues(reps[0]);

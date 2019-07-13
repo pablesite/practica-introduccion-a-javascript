@@ -6,7 +6,7 @@ let testATR = require("./arabicToRoman");
 
 console.log("PRUEBA NÚMEROS ROMANOS A ÁRABES")
 
-// Introduce aquí tu número romano.
+/** Introduce aquí tu número romano.**/
 let roman = "MMXIX"
 
 console.log("Has introducido el número romano: " + roman)
@@ -17,7 +17,7 @@ console.log("Su valor es: " + arabicNum);
 
 console.log("PRUEBA NÚMEROS ÁRABES A ROMANOS")
 
-// Introduce aquí tu número árabe.
+/** Introduce aquí tu número árabe.**/
 let arabic = 219;
 
 let romanNum = testATR.arabicToRoman(arabic);
