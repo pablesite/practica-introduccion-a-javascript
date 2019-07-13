@@ -13,8 +13,8 @@ let Hand = require("./Hand");
 let handPlayer1 = new Hand.Hand("2H", "3D", "5S", "9C", "KD");
 let handPlayer2 = new Hand.Hand("2C", "3H", "4S", "8C", "AH");
 */
-let handPlayer1 = new Hand.Hand("2H", "KH", "4H", "3H", "AH");
-let handPlayer2 = new Hand.Hand("AH", "QD", "KS", "JC", "TD");
+let handPlayer1 = new Hand.Hand("3D", "3H", "3D", "3D", "7D");
+let handPlayer2 = new Hand.Hand("3D", "3H", "3D", "3D", "7D");
 
 try {
     if(!handPlayer1.validateHand() || !handPlayer2.validateHand() )
@@ -34,22 +34,24 @@ try {
         let i;
 
         for (i = 9; i > 0; i--) {
-            /* La jugada se calculará con restricciones, para resolver el tema de los empates.
+            /* La jugada se calculará con restricciones, para resolver el tema de los empates. (REVISAR ESTO, NO HACE FALTA CREO)
             * Si ha habido un empate con un poker (valor 9), se va a calcular la siguiente jugada con la restricción del 9, es decir,
             * de 8 hacia abajo. En el caso inicial, no hay restricciones, por lo que el parámetro será un 9.
             */
-
 
             if (restrict >= i) {
                 playPlayer1 = handPlayer1.getPlayHand(restrict);
                 playPlayer2 = handPlayer2.getPlayHand(restrict);
                 restrict = Math.max(playPlayer1, playPlayer1);
 
+
                 if (playPlayer1 > playPlayer2 ) {
                     console.log("Gana el jugador 1. " + handPlayer1.getTypeHand(playPlayer1));
                     restrict = 0;
 
+
                 } else if (playPlayer1  ===  playPlayer2) {
+
                     /* Cada jugada devuelve un string de 5 símbolos hexadecimales con el orden que ha resultado la puntuación de la mano.
                     Lo único que hay que hacer es comparar esta cadena transformada a decimal (parseInt(hex, 16)) .*/
                     punctuationPlayer1 = parseInt(handPlayer1.getPunctuation(playPlayer1),16);
@@ -62,17 +64,19 @@ try {
                     console.log("PUNTUACIÓN player 1. " + punctuationPlayer1)
                     console.log("PUNTUACIÓN player 2. " + punctuationPlayer2)
 
-
                     if (punctuationPlayer1  > punctuationPlayer2 ) {
                         console.log("Gana el jugador 1. " + handPlayer1.getTypeHand(playPlayer1) /*+ handPlayer1.typePunctuationPlayer1(punctuationPlayer1)*/);
                         restrict = 0;
                     } else if (punctuationPlayer1 === punctuationPlayer2 ) {
                         /* Si el valor de la jugada también es empate */
+
                         if(restrict === 1){
                             console.log("Empate")
                             restrict = 0;
                         } else {
-                            restrict -=1;
+                            console.log("Empate")
+                            restrict = 0;
+
                         }
                     } else {
                         console.log("Gana el jugador 2. " + handPlayer1.getTypeHand(playPlayer2) /*+ handPlayer1.typePunctuationPlayer1(punctuationPlayer2)*/);
