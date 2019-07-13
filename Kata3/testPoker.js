@@ -13,8 +13,8 @@ let Hand = require("./Hand");
 let handPlayer1 = new Hand.Hand("2H", "3D", "5S", "9C", "KD");
 let handPlayer2 = new Hand.Hand("2C", "3H", "4S", "8C", "AH");
 */
-let handPlayer1 = new Hand.Hand("9H", "9D", "9S", "9C", "4D");
-let handPlayer2 = new Hand.Hand("2H", "8D", "9S", "9C", "4D");
+let handPlayer1 = new Hand.Hand("AH", "KD", "2S", "3C", "4D");
+let handPlayer2 = new Hand.Hand("AH", "QD", "KS", "JC", "TD");
 
 try {
     if(!handPlayer1.validateHand() || !handPlayer2.validateHand() )

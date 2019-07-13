@@ -78,10 +78,29 @@ class Hand {
         }
     }
     existFlush () {
+        let cardValues = [this.card1.value, this.card2.value, this.card3.value, this.card4.value, this.card5.value];
+
         return false;
     }
     existStraight () {
-        return false;
+        let cardValues = [this.card1.value, this.card2.value, this.card3.value, this.card4.value, this.card5.value];
+        let output = true;
+
+        cardValues.sort((a, b) => a - b).forEach(function(element, index) {
+            console.log(element)
+            if (index != 0){
+                /* si la diferencia entre un número y el siguiente no es 1 o si
+                la diferencia no es 9 (escalera de 2 a A), entonces false */
+                if ((element -1) != cardValues[index-1] && ((element -9) != cardValues[index-1])) {
+
+                        output = false;
+                }
+                console.log("¿ESCALERA? " + output)
+            }
+        });
+
+        return output;
+
     }
     existThreeOfAKind () {
         let cardValues = [this.card1.value, this.card2.value, this.card3.value, this.card4.value, this.card5.value];
@@ -112,7 +131,7 @@ class Hand {
 
         let reps = this.getReps(cardValues);
 
-        if (reps[0] === 0 && reps[1] === 5 ) {
+        if (reps[0] === 1 && reps[1] === 3 ) {
             return true;
         } else {
             return false;
